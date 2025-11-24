@@ -1,0 +1,8 @@
+# python virtual environment
+cs50/
+
+# python cache
+__pycache__/
+
+# Flask sessions
+flask_session/
