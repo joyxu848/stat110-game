@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Study Progress
+{% endblock %}
+
+{% block main %}
+<div class="container" style="max-width: 800px; text-align: left;">
+    <h1 class="mb-4 text-center">Practice Problems</h1>
+
+    <!-- Topic selector + New random problem -->
+    <form method="get" action="/study" class="row g-2 align-items-end mb-4">
+        <div class="col-md-8">
+            <label for="topic" class="form-label fw-bold">Choose a topic</label>
+            <select id="topic" name="topic" class="form-select">
+                <option value="Any" {% if selected_topic == "Any" %}selected{% endif %}>Any topic</option>
+                {% for t in topics %}
+                    <option value="{{ t.topic }}"
+                        {% if selected_topic == t.topic %}selected{% endif %}>
+                        {{ t.topic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4 text-md-start text-center">
+            <button type="submit" class="btn btn-secondary mt-3 mt-md-0 w-100">
+                New Random Problem
+            </button>
+        </div>
+    </form>
+
+    {% if problem %}
+        <div class="card mb-4">
+            <div class="card-header">
+                Topic: <strong>{{ problem.topic }}</strong>
+            </div>
+            <div class="card-body">
+                <p class="card-text mb-3">
+                    {{ problem.problem }}
+                </p>
+
+                {% if show_answer %}
+                    <div class="alert alert-info mb-3">
+                        <strong>Answer:</strong> {{ problem.answer }}
+                    </div>
+                {% endif %}
+
+                <!-- Reveal / self-report form -->
+                <form method="post" action="/study" class="d-flex flex-column flex-md-row gap-2">
+
+                    <input type="hidden" name="problem_id" value="{{ problem.id }}">
+                    <input type="hidden" name="topic" value="{{ selected_topic }}">
+
+                    {% if not show_answer %}
+                        <button type="submit" name="action" value="reveal" class="btn btn-primary">
+                            Reveal Answer
+                        </button>
+                    {% else %}
+                        <button type="submit" name="action" value="right" class="btn btn-success">
+                            I got it right
+                        </button>
+
+                        <button type="submit" name="action" value="wrong" class="btn btn-danger">
+                            I got it wrong
+                        </button>
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
+
+        {% if feedback %}
+            <div class="alert alert-secondary">
+                {{ feedback }}
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            No problems found for this topic yet. Try another topic or seed more problems later.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

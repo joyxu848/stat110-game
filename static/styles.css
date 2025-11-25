@@ -21,3 +21,131 @@ nav .navbar-brand .green
 {
     color: #2e944b;
 }
+
+
+/* ================================
+   STUDY BREAK GAME STYLES
+   ================================ */
+
+/* Center the whole game section within the main container */
+.study-break-wrapper {
+    min-height: 65vh;
+}
+
+/* Inner content column */
+.study-break-content {
+    min-height: 65vh;
+}
+
+/* Overhead street sign + gantry + lights container */
+.overhead-structure {
+    position: relative;
+    width: 620px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+/* Vertical support pole */
+.overhead-pole {
+    position: absolute;
+    left: 40px;
+    bottom: 0;
+    width: 14px;
+    height: 120px;
+    background: #555;
+    border-radius: 6px;
+}
+
+/* Horizontal gantry bar */
+.overhead-gantry {
+    position: absolute;
+    left: 40px;
+    top: 25px;
+    width: 540px;
+    height: 12px;
+    background: #666;
+    border-radius: 6px;
+}
+
+/* Hanging street sign */
+.street-sign {
+    position: absolute;
+    left: 180px;
+    top: 45px;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: #f1c40f;
+    padding: 10px 28px;
+    border-radius: 12px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border: 3px solid #f1c40f;
+    white-space: nowrap;
+}
+
+/* Hangers for the street sign */
+.street-sign-hanger {
+    position: absolute;
+    top: 25px;
+    width: 3px;
+    height: 20px;
+    background: #888;
+}
+
+.street-sign-hanger.left {
+    left: 150px;
+}
+
+.street-sign-hanger.right {
+    left: 210px;
+}
+
+/* Traffic light base */
+.traffic-light {
+    position: absolute;
+    top: 40px;
+    width: 34px;
+    height: 90px;
+    background: #222;
+    border-radius: 10px;
+    border: 3px solid #444;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Left and right positions for traffic lights */
+.traffic-light.left {
+    right: 110px;
+}
+
+.traffic-light.right {
+    right: 60px;
+}
+
+/* Individual light circles */
+.traffic-light .light {
+    margin: 6px auto 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+/* Light colors */
+.traffic-light .light.red {
+    background: #e74c3c;
+}
+
+.traffic-light .light.yellow {
+    background: #f1c40f;
+}
+
+.traffic-light .light.green {
+    background: #2ecc71;
+}
+
+/* Game canvas styling */
+.study-game-canvas {
+    border: 3px solid #333;
+    border-radius: 8px;
+    background: #222;
+}

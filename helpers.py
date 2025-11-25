@@ -64,6 +64,37 @@ def lookup(symbol):
     return None
 
 
+def process_holdings(holdings):
+    """ Prepare holdings for portfolio rendering """
+    portfolio_total = 0.0
+    for row in holdings:
+        symbol = row["symbol"]
+        shares = row["total_shares"]
+        quote = lookup(symbol)
+        if not quote:
+            # trouble shooting for when lookup fails
+            row.update({
+                "name": symbol,
+                "price": None,
+                "current_price": 0.0,
+                "total_value": 0.0,
+                "quote_error": True
+            })
+            continue
+        current_price = float(quote["price"])
+        total_value = shares * current_price
+        portfolio_total += total_value
+        row.update({
+            "name": quote["name"],
+            "price": current_price,
+            "current_price": current_price,
+            "total_value": total_value,
+            "quote_error": False
+        })
+    return holdings, portfolio_total
+
+
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+

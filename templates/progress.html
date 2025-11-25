@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Study Progress
+{% endblock %}
+
+{% block main %}
+<div class="container" style="max-width: 900px; text-align: left;">
+    <h1 class="mb-4 text-center">Your Progress</h1>
+
+    <!-- Topic-wise stats -->
+    <h3 class="mb-3">By Topic</h3>
+
+    {% if stats %}
+        <table class="table table-striped table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Topic</th>
+                    <th class="text-center">Correct</th>
+                    <th class="text-center">Wrong</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Accuracy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in stats %}
+                    <tr>
+                        <td>{{ row.topic }}</td>
+                        <td class="text-center">{{ row.correct_count }}</td>
+                        <td class="text-center">{{ row.wrong_count }}</td>
+                        <td class="text-center">{{ row.total }}</td>
+                        <td class="text-center">
+                            {% if row.total > 0 %}
+                                {{ ((row.correct_count / row.total) * 100) | round(1) }}%
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">
+            You haven’t logged any practice yet. Try solving some problems on the Practice page!
+        </div>
+    {% endif %}
+
+    <!-- Wrong problems list -->
+    <h3 class="mt-5 mb-3">Problems You Got Wrong</h3>
+
+    {% if wrong_problems %}
+        <div class="list-group">
+            {% for p in wrong_problems %}
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="small text-muted mb-1">
+                                Topic: <strong>{{ p.topic }}</strong>
+                            </div>
+                            <div class="mb-1">
+                                {{ p.problem }}
+                            </div>
+                            <div class="small text-muted">
+                                <strong>Answer:</strong> {{ p.answer }}
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <a href="/study?problem_id={{ p.id }}" class="btn btn-sm btn-outline-primary">
+                                Review this problem
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+            You haven’t marked any problems as wrong yet—or you’re still just getting started.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
