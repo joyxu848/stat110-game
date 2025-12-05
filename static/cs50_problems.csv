@@ -1,0 +1,1297 @@
+Year,Problem,Tags,Text,Counting,General Definition and Properties of Probability,Conditional Probability,Random Variables,Expectation,Conditional Expectation,Important Discrete Distributions,Important Continuous Distributions,Jointly Distributed Random Variables,Convergence,Inequalities,Markov Chains,Important Examples
+2015,1,"% Bayes' rule, LOTP ","\noin 1. A crime has been committed in a certain country. The perpetrator is one (and only one) of the $n$ men who live in the country. Initially, these $n$ men are all deemed equally likely to be the perpetrator. An eyewitness then reports that the crime was committed by a man with six fingers on his right hand.  Let $p_0$ be the probability that an innocent man has six fingers on his right hand, and $p_1$ be the probability that the perpetrator has six fingers on his right hand, with $p_0 < p_1$. (We may have $p_1 < 1$, since eyewitnesses are not 100\% reliable.) Let $a=p_0/p_1$ and $b=(1-p_1)/(1-p_0)$. 
+
+\medskip
+
+\noin Rugen lives in the country. He is found to have six fingers on his right hand.
+\medskip
+
+\noin (a) Given this information, what is the probability that Rugen is the perpetrator? Express your answer in terms of $n$ and $a$. 
+
+\vspace{2.1in}
+
+
+\noin (b)  Now suppose that all $n$ men who live in the country have  their hands checked, and Rugen is the \emph{only} one with six fingers on his right hand. Given this information, what is the probability that Rugen is the perpetrator? Express your answer in terms of $n,a,$ and $b$.
+",1,1,1,0,0,0,0,0,0,0,0,0,0
+2015,2,"% symmetry, independence, Jensen, variance","\noindent 2. Let $X,Y,Z$ be i.i.d.~(independent, identically distributed) r.v.s with a continuous distribution. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\medskip
+\medskip
+\medskip
+\medskip
+\medskip
+
+\noindent (a) $P(X<Y<Z)$  \underline{\phantom{blah}}  $1/6$ 
+
+\vspace{0.85in}
+
+\noindent (b) $P(X>1)$  \underline{\phantom{blah}} $E(X)$ 
+
+\vspace{0.85in}
+
+\noindent (c)    $P \left( \displaystyle \sum_{k=0}^{2015} \left( \frac{X^2+1}{X^2+2} \right)^k > 3 \right)$   \underline{\phantom{blah}} $P(X^2>1)$
+
+\vspace{0.85in}
+
+\noindent (d)  $E \left( \sqrt{X^2 + Y^2} \right)$  \underline{\phantom{blah}} $\sqrt{E(X^2)+E(Y^2)}$
+
+\vspace{0.85in}
+
+\noindent (e) $\var(Y^2|Z) $  \underline{\phantom{blah}} $\var(X^2|X)$
+
+\vspace{0.85in}
+
+\noindent (f) $\var(X-2Y+3Z)$ \underline{\phantom{blah}} $14 \var(X)$
+",0,0,0,0,0,0,0,0,0,0,1,0,0
+2015,3,"% Poisson process, Adam's law, Eve's law, conditional distributions, Poisson, Binomial, chicken-egg","\noin 3. Emails arrive in an inbox according to a Poisson process of rate $\lambda$ emails per hour. 
+
+\medskip
+
+\noin (a) Find the name and parameters of the conditional distribution of the number of emails that arrive in the first $2$ hours of an $8$-hour time period, given that exactly $n$ emails arrive in that time period. 
+
+\vspace{2in}
+
+\noin (b) Each email is legitimate with probability $p$ and spam with probability $q=1-p$, independently. Find the name and parameters of the conditional distribution of the number of legitimate emails that arrive in an $8$-hour time period, given that exactly $s$ spams arrived in that time period.
+
+\vspace{1.64in}
+
+\noin (c) Reading an email takes a random amount of time, with mean $\mu$ hours and \nobreak standard deviation $\sigma$ hours. These reading times are i.i.d.~and independent of the email arrival process. Find  the (unconditional) mean and variance of the total time it takes to read all the emails that arrive in an $8$-hour time period.
+",1,1,1,1,1,1,1,0,0,0,0,0,1
+2015,4,"% linearity, indicator r.v.s, inclusion-exclusion, Poisson approximation","\noin 4. There are $k$ distinguishable balls and $n$ distinguishable boxes. The balls are randomly placed in the boxes, with all $n^k$ possibilities equally likely. 
+
+\medskip
+
+\noin (a) Find the expected number of empty boxes (fully simplified,  \emph{not} as a sum).
+
+\vspace{1.7in}
+
+\medskip
+
+\noin (b) Find the probability that at least one box is empty. Express your answer as a sum of at most $n$ terms. 
+
+\vspace{2.1in}
+
+
+\noin (c) Now let $n=1000, \, k=5806$. The expected number of empty boxes is then approximately equal to $3$. Find a good approximation for the probability that at least one box is empty (give a decimal approximation). You can use the handy fact  $e^3 \approx 20$. 
+",1,1,0,1,1,0,1,0,0,0,0,0,0
+2015,5,"% conditioning, Uniform","\noin 5. You are given an opportunity to bid on a mystery box containing a mystery prize! The value of the prize is completely unknown, except that it is worth at least nothing, and at most a million dollars. So the true value $V$ of the prize is considered to be Uniform on [0,1] (measured in millions of dollars).
+
+\medskip
+
+\noin You can choose to bid any nonnegative amount $b$ (in millions of dollars). If $b < \frac{1}{4} V$, then your bid is rejected and nothing is gained or lost. If $b \geq \frac{1}{4}V$, then your bid is accepted and your net payoff is $V - b$ (since you pay $b$ to get a prize worth $V$). 
+
+\medskip
+
+\noin Find your expected payoff as a function of $b$ (be sure to specify it for all $b \geq 0$). Then find the optimal bid $b$, to maximize your expected payoff.",1,1,0,1,1,1,0,0,0,0,0,0,0
+2015,6,"% Expo, memoryless property","\noindent 6.  Suppose that the time until a radioactive particle decays is $\Expo(\lambda)$.
+
+\medskip
+
+\noin (a) Show that for $c$ a small, positive constant, the probability that such a particle decays in the time interval $(t,t+c]$, given that it has survived until time $t$, does not depend on $t$ and is approximately proportional to $c$.
+
+\smallskip
+
+\noin Hint: $e^x \approx 1+x$ if $x \approx 0$.
+
+\vspace{2.3in}
+
+\noin (b) Consider $3$ radioactive particles, with i.i.d.~times until decay $T_1,T_2,T_3 \sim \Expo(\lambda).$ Let $X$ be the {last} time at which one of the particles decays. Find $E(X)$. 
+
+\medskip
+
+\medskip",0,0,1,1,1,0,0,1,0,0,0,0,0
+2015,7,"% Normal, LOTUS, universality of the Uniform, Log-Normal","\noin 7.  Let $X,Y,Z,W \sim \N(0,1)$ be i.i.d., and (as usual) let $\Phi$ be the $\N(0,1)$ CDF.
+
+\medskip
+
+\noin (a) Find an expression for $E\left(\Phi(Z)  e^Z\right)$ as an unsimplified integral.
+
+\vspace{1.25in}
+
+\noin (b) Find $E(\Phi(Z))$ and $E(e^Z)$ as fully simplified numbers.
+
+\vspace{2.3in}
+
+\noin (c) Find $P(X+Y < Z + W + 1)$, in terms of $\Phi$. 
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2015,8,"% Markov chains, reversibility","\noindent 8. Determine whether the Markov chain shown below is reversible, and find the stationary distribution of the chain. The label to the left of an arrow gives the corresponding  transition probability.
+
+\smallskip
+
+\begin{figure}[htbp] 
+   \centering
+   \includegraphics[width=4.2in]{figures/chain15.pdf} 
+\end{figure}
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2016,1,,"\noin 1. Two different diseases cause a certain weird symptom; anyone who has either or both of these diseases will experience the symptom. Let $D_1$ be the event of having the first disease, $D_2$ be the event of having the second disease, and $W$ be the event of having the weird symptom. Suppose that $D_1$ and $D_2$ are independent with $P(D_j) = p_j$, and that a person with neither of these diseases will have the weird symptom with probability $w_0$. Let $q_j = 1-p_j$, and assume that $0<p_j<1$. 
+
+\medskip
+
+\noin (a) Find $P(W)$. 
+
+\vspace{1.9in}
+
+\noin (b) Find $P(D_1|W)$ and $P(D_1,D_2|W)$. 
+
+ \vspace{2.2in}
+
+\noin (c) Suppose for this part only that $w_0=0$. Are $D_1$ and $D_2$ conditionally independent given $W$? Give a clear, convincing intuitive explanation in words. ",1,1,1,0,0,0,0,0,0,0,0,0,0
+2016,2,"% Binomial, symmetry, independence, Markov, Jensen, variance, MGF, properties of probability, conditional expectation","\noindent 2. Let $X,Y,Z \sim \Bin(n,p)$ be i.i.d.~(independent and identically distributed). Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\medskip
+\medskip
+\medskip
+\smallskip
+
+\noindent (a) $P(X<Y<Z)$  \underline{\phantom{blah}}  $1/6$ 
+
+\vspace{1in}
+
+\noindent (b) $P(X+Y+Z>n)$  \underline{\phantom{blah}} $3p$ 
+
+\vspace{1in}
+
+\noindent (c)    $P \left( \displaystyle \sum_{n=0}^{2016} \frac{(X^2+1)^n}{n!} > e^5\right)$   \underline{\phantom{blah}} $P(X>2)$
+
+\vspace{1in}
+
+\noindent (d)  $E \left( e^X \right)$  \underline{\phantom{blah}} $(pe + 1-p)^n$ 
+
+\vspace{1in}
+
+\noindent (e) $\var(X+Y) $  \underline{\phantom{blah}} $n/2$ 
+
+\vspace{1in}
+
+\noindent (f) $E(X \,|\,X+Y=n)$ \underline{\phantom{blah}} $n/2$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2016,3,"% Poisson, Adam, Eve, chicken-egg","\noin 3. Joe will read $N \sim \Pois(\lambda)$ books next year. Each book has a $\Pois(\mu)$ number of pages, with book lengths independent of each other and independent of $N$. 
+
+\medskip
+
+\noin (a) Find the expected number of book pages that Joe will read next year. 
+
+\vspace{1.8in}
+
+\noin (b) Find the variance of the number of book pages  Joe will read next year.  
+
+\vspace{1.8in}
+
+\noin (c) For each of the $N$ books, Joe likes it with probability $p$ and dislikes it with probability $1-p$, independently. Find the conditional distribution of how many of the $N$ books Joe likes, given that he dislikes exactly $d$ of the books.  ",0,0,0,1,1,1,1,0,0,0,0,0,1
+2016,4,"% expectation, linearity, indicator r.v.s, variance, covariance","\noin 4. A certain academic program has $n$ students enrolled. Each of these students takes the same two courses. The two courses meet in the same lecture hall, which has exactly $n$ seats. The courses have assigned seating. The seating assignment for each course is chosen completely randomly (with all possibilities equally likely), and the seating assignments for the two courses are independent of each other. Let $X$ be the number of students who have the same seat for both courses.
+
+\medskip
+
+\noin (a) Find $E(X)$. 
+
+\vspace{1.6in}
+
+\noin (b) Find $\textrm{Var}(X)$. 
+
+\vspace{2.5in}
+
+\noin (c) For $n$ large, find a good, simple approximation for $P(X \leq 2)$. ",1,1,0,1,1,0,1,0,0,0,0,0,0
+2016,5,"% Expo, Poisson process, memoryless property, order statistics","\noindent 5. (a) A certain machine often breaks down and needs to be fixed. At time $0$, the machine is working. It  works for an $\Expo(\lambda)$ period of time (measured in days), and then breaks down. It then takes an $\Expo(\lambda)$ amount of time to get it fixed, after which it will work for an $\Expo(\lambda)$ time until it breaks down again, after which it will take an $\Expo(\lambda)$ time to get it fixed, etc. Assume that these $\Expo(\lambda)$ r.v.s are i.i.d.
+
+\medskip
+
+\noin A \emph{transition} occurs when the machine switches from working to being broken, or switches from being broken to working. Find the distribution of the number of transitions that occur in the time interval $(0,t)$. 
+
+\vspace{2in}
+
+\noin (b) Hoping to reduce the frequency of breakdowns, the machine is redesigned so that it can continue to function even if one component has failed. The redesigned machine has $5$ components, each of which works for an $\Expo(\lambda)$ amount of time and then fails, independently. The machine works properly if and only if at most one component has failed. Currently, all $5$ components are working (none have failed).  Find the expected time until the machine breaks down. ",0,0,0,1,1,0,1,1,0,0,0,0,0
+2016,6,"%  Multinomial, symmetry, expectation, linearity, indicator r.v.s, ","\noin 6.  A DNA sequence can be represented as a sequence of letters, where the ``alphabet"" has 4 letters: A,C,G,T. Suppose that a random DNA sequence of length $n \geq 4$ is formed by independently generating letters one at a time, with $p_A, p_C, p_G, p_T$ the probabilities of A,C,G,T, respectively, where $p_A+p_C+p_G+p_T=1$.
+
+\medskip
+
+\noin (a) Find the covariance between the number of A's and the number of C's in the sequence. 
+
+\vspace{1.6in}
+
+\noin (b) It is observed that the sequence contains exactly $a$ A's, $c$ C's, $g$ G's, and $t$ T's, where $a+c+g+t=n$ and $a \geq 2$. Given this information, find the probability that the first A in the sequence is followed immediately by another A. 
+
+\vspace{1.9in}
+
+\noin (c) Given the information from (b) about how many times each letter occurs, find the expected number of occurrences of the expression CAT in the sequence. 
+",1,1,1,1,1,0,0,0,0,0,0,0,0
+2016,7,"% Normal, LOTUS, universality of the Uniform","\noin 7.  Let $X,Y,Z \sim \N(0,1)$ be i.i.d.,  $\Phi$ be the $\N(0,1)$ CDF, and  $W = \left(\Phi(Z)\right)^2$.
+
+\medskip
+
+\noin (a) Find the CDF and PDF of $W$, and the name and parameters of the distribution of $W$. 
+
+\vspace{2in}
+
+\noin (b) Let $f_W$ be the PDF of $W$ and $\varphi$ be the PDF of $Z$. Find unsimplified expressions for $E(W^3)$ as integrals in two different ways, one based on $f_W$ and one based on $\varphi$. 
+
+\vspace{2in}
+
+\noin (c)  Find $P(X+2Y < 2Z + 3)$, in terms of $\Phi$. ",0,0,0,1,1,0,0,1,0,0,0,0,0
+2016,8,"% Markov chains, time until HH, conditional expectation, stationary distribution, reversibility","\noindent 8. (a) \vspace{-0.35in}
+ \begin{figure}[htbp] 
+   \centering
+   \includegraphics[width=2.8in]{figures/SonicLava.jpg} 
+\end{figure}
+
+\noin There are three blocks, floating in a sea of lava. Label the blocks $1,2,3$, from left to right. Sonic the Hedgehog is standing on block 1. To reach safety, he must get to block 3. He can't jump directly from block 1 to block 3; his only hope is to jump from block 1 to block 2, then jump from block 2 to block 3. Each time he jumps, he has probability $1/2$ of success and probability $1/2$ of ``dying"" by falling into the lava. If he ``dies"", he starts again at block 1. Let $J$ be the total number of jumps that Sonic will make in order to get to block 3. Find $E(J)$. 
+
+\vspace{2in}
+
+\noin (b) Consider the following Markov chain with $52! \approx  8 \times 10^{67}$ states. The states are the possible orderings of a standard 52-card deck. To run one step of the chain, pick 2 different cards from the deck, with all pairs equally likely, and swap the 2 cards. Find the stationary distribution of this chain. 
+",0,0,0,0,1,1,0,0,0,0,0,1,1
+2017,1,,"\noin 1. Monty Hall is trying out a new version of his game. In this version, instead of there always being 1 car and 2 goats, the prizes behind the doors are generated \emph{independently}, with each door having probability $p$ of having a car and $q=1-p$ of having a goat. In detail: There are three doors, behind each of which there is one prize: either a car or a goat. For each door, there is probability $p$ that there is a car behind it and $q=1-p$ that there is a goat, independent of the other doors. 
+
+\medskip
+
+\noin The contestant chooses a door. Monty, who knows the contents of each door, then opens one of the two remaining doors. In choosing which door to open, Monty will always reveal a goat if possible. If both of the remaining doors have the same kind of prize, Monty chooses randomly (with equal probabilities). After opening a door, Monty offers the contestant the option of switching to the other unopened door. 
+
+\medskip
+
+\noin The contestant decides in advance to use the following strategy:  first choose Door 1. Then, after Monty opens a door, switch to the other unopened door.
+
+\medskip
+
+\noin (a) Find the unconditional probability that the contestant will get a car. 
+
+\vspace{2.5in}
+
+\noin (b) Monty now opens Door 2, revealing a goat. Given this information, find the  conditional probability that the contestant will get a car. 
+",1,1,1,0,0,0,0,0,0,0,0,0,1
+2017,2,,"\noindent 2. Let $X,Y,Z,W \sim \N(c,c^2)$ be i.i.d., where $c>0$. Let $\Phi$ be the $\N(0,1)$ CDF and log denote natural logarithm.  Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\medskip
+\medskip
+\medskip
+
+\noindent (a) $P(X+Y \leq Z-W)$  \underline{\phantom{blah}} $\Phi(-1)$ 
+
+\vspace{1.2in}
+
+
+\noindent (b) $P(X^4 - Y^8 \leq Z^4 - W^8)$  \underline{\phantom{blah}}  $\Phi(-1)$
+
+\vspace{1.2in}
+
+%\noindent (c)    $E((X^{110}-Y^{110})(X^{110}+Y^{110}))$   \underline{\phantom{blah}} $1/6$
+
+\noindent (c)  $E  (X-c)^2$  \underline{\phantom{blah}} $c$
+
+\vspace{1.2in}
+
+\noindent (d)  $E  (X-c)^3 $  \underline{\phantom{blah}} $c$
+
+\vspace{1.2in}
+
+\noindent (e)  $ E\left( \frac{1}{4} X^2 + X \right)$  \underline{\phantom{blah}} $\frac{1}{2} c^2 + c$
+
+\vspace{1.2in}
+
+\noindent (f)  $ \log \left(E (e^X ) \right) $  \underline{\phantom{blah}} $\frac{1}{2} c^2 + c$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2017,3,,"\noindent 3. The sociologist Elizabeth Wrigley-Field posed the following puzzle:
+\begin{quotation} 
+\vspace{-0.05in}
+\noin \emph{American fertility fluctuated dramatically in the decades surrounding the Second World War. Parents created the smallest families during the Great Depression, and the largest families during the postwar Baby Boom. Yet children born during the Great Depression came from larger families than those born during the Baby Boom. How can this be?}
+\end{quotation} 
+
+\noin (a) For a particular era, let $n_k$ be the number of American families with exactly $k$ children, for each $k \geq 0$. (Assume for simplicity that American history has cleanly been separated into eras, where each era has a well-defined set of families, and each family has a well-defined set of children; we are ignoring the fact that a particular family's size may change over time, that children grow up, etc.) For each $j \geq 0$, let $$m_j = \sum_{k=0}^\infty k^j \, n_k.$$ For a \emph{family} selected randomly in that era (with all families equally likely), find the expected number of children in the family. Express your answer only in terms of the $m_j$'s.
+
+\vspace{1.5in}
+
+\noin (b) For a \emph{child} selected randomly in that era (with all children equally likely), find the expected number of children in the child's family, only in terms of the $m_j$'s. 
+
+\vspace{1.5in}
+
+\noin (c) Give an intuitive explanation in words for which of the answers to (a) and (b) is larger, or whether they are equal. Explain how this relates to the Wrigley-Field puzzle.
+",1,1,0,0,1,0,0,0,0,0,0,0,0
+2017,4,,"\noin 4. Consider a group of $m$ roommate pairs at Harvard (so $2m$ students). Each of these $2m$ students independently decides randomly whether to take Stat 110, with probability $p$ of ``success"" (i.e., taking Stat 110, where hopefully $p$ is large). Let $N$ count how many of these $2m$ students take Stat 110, and $X$ count how many of the $m$ roommate pairs there are such that \emph{both} roommates in the pair take Stat 110. 
+
+\medskip
+
+\noin (a) Find $E(X)$. 
+
+\vspace{1.7in}
+
+
+\noin (b) Find $E(X|N)$.
+
+\vspace{2.7in}
+
+\noin (c) Let $F$ be the CDF of $X$. Find an expression for $E(F(X))$. Your answer can be left as a sum of at most $m+1$ terms,  and can be in terms of $p,m,$ and $F(x)$ for various $x$.
+",1,1,1,1,1,1,1,0,0,0,0,0,0
+2017,5,,"\noin 5. Two authors, Bob and Martha, are about to begin writing an epic co-authored book,  \emph{Ethel the Aardvark Goes Quantity Surveying}. It will take them $A$ years to write. When they finish this book, they will immediately begin work on new, individually authored books. Bob will spend $X$ years writing  \emph{The Bilinear Bonanza of Bonnie the Butterfly}, and Martha will spend $Y$ years writing \emph{Memoirs of Maude the Magnificent Mangabey}, independently.  Suppose that $A,X,Y$ are i.i.d.~$\Expo(\lambda)$. On a timeline where time $0$ is defined as the time when they begin their collaboration, consider the following quantities.
+\begin{itemize}
+\item[] $A$: time at which \emph{Ethel the Aardvark Goes Quantity Surveying} is completed;
+\item[] $B$:  time at which \emph{The Bilinear Bonanza of Bonnie the Butterfly} is completed;
+\item[] $M$:  time at which \emph{Memoirs of Maude the Magnificent Mangabey} is completed;
+\item[] $T$: time at which the last to be completed of these three books is completed.
+\end{itemize}
+
+\smallskip
+
+\noin (a) Find the distribution of $B$ (which is also the distribution of $M$). 
+ 
+\vspace{1.10in}
+
+\noin (b) Find $\textrm{Cov}(A,B)$. 
+
+\vspace{1.5in}
+
+\noin (c) Find $E(T)$.
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2017,6,,"\noin 6. Buses arrive at a certain bus stop according to a Poisson process of rate $\lambda$. Each bus has $n$ seats and, at the instant when it arrives at the stop, has a $\Bin(n,p)$ number of passengers. Assume that the numbers of passengers on different buses are independent of each other, and independent of the arrival times of the buses. 
+
+\medskip
+
+\noin  Let $N_t$ be the number of buses that arrive in the time interval $[0,t]$, and $X_t$ be the total number of passengers on the buses that arrive in the time interval $[0,t]$. 
+
+\medskip
+
+\noin (a) Find the mean and variance of $N_t$. 
+
+\vspace{1.42in}
+
+\noin (b) Find the mean and variance of $X_t$. 
+
+
+\vspace{2.3in}
+
+\noin (c) A bus is \emph{full} if it has exactly $n$ passengers when it arrives at the stop. Find the probability that exactly $a+b$ buses arrive in $[0,t]$, of which $a$ are full and $b$ are not full.  
+",1,1,0,1,1,1,1,0,0,0,0,0,1
+2017,7,,"\noin 7. A new treatment, Bayes' serum, has just been developed for the disease conditionitis. A clinical trial is about to be conducted, to study how effective the treatment is. Bayes' serum will be applied to $n$ patients who have conditionitis. Given $p$, the patients' outcomes are independent, with each patient having probability $p$ of being cured by the treatment. But $p$ is unknown. To quantify our uncertainty about $p$, we model $p$ as a random variable, with prior distribution $p \sim \Unif(0,1)$.
+
+\medskip
+
+\noin (a) Find the probability that exactly $k$ out of the $n$ patients will be cured by the treatment (unconditionally, \emph{not} given $p$). Your answer should be fully simplified; half credit is available for an answer left as an integral.
+
+\vspace{2.85in}
+
+\noin (b) Now suppose that the treatment is extremely effective in the clinical trial: all $n$ patients are cured! Given this information, find the probability that $p$ exceeds $1/2$. Your answer should be fully simplified, and expressed only in terms of $n$. 
+",1,1,1,1,0,0,1,1,0,0,0,0,0
+2017,8,,"\noindent 8.   Find the stationary distribution of a Markov chain $X_0,X_1,X_2,\dots$ on the state space $\{0,1,\dots,110\}$, with transition probabilities given by 
+\begin{align*} 
+    P(X_{n+1} = j | X_n = 0) &= p, \textrm{ for $j=1,2,\dots,110$;}  \\[7pt]
+   P(X_{n+1} = 0 | X_n = 0) &= 1-110p;  \\[7pt]
+    P(X_{n+1} = j | X_n = j) &= 1-r, \textrm{ for $j=1,2,\dots,110$;}  \\[7pt]
+  P(X_{n+1} = 0 | X_n = j) &= r,  \textrm{ for $j=1,2,\dots,110$,}
+   \end{align*}
+ where $p$ and $r$ are constants with $0<p<\frac{1}{110}$ and $0<r<1$. 
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2018,1,,"\noin 1. Consider the following variation of the Monty Hall problem, where in some situations Monty may \emph{not} open a door and give the contestant the choice of whether to switch doors. Specifically, there are 3 doors, with 2 containing goats and 1 containing a car.  The car is equally likely to be anywhere, and Monty knows where the car is. Let $0 \leq p \leq 1$.
+
+\smallskip
+
+\noin The contestant chooses a door. If this initial choice has the car, Monty \emph{will} open another door, revealing a goat (choosing with equal probabilities among his two choices of door), and then offer the contestant the choice of whether to switch to the other unopened door. 
+
+\smallskip
+
+\noin If the contestant's initial choice has a goat, then with probability $p$ Monty \emph{will} open another door, revealing a goat, and then offer the contestant the choice of whether to switch to the other unopened door; but with probability $1-p$, Monty will \emph{not} open a door, and the contestant must stick with their initial choice. 
+
+\smallskip
+
+\noin The contestant decides in advance to use the following strategy: initially choose Door 1. Then, if Monty opens a door and offers the choice of whether to switch, do switch.
+
+\medskip
+
+\noin (a) Find the unconditional probability that the contestant will get the car. Also, check what your answer reduces to in the extreme cases $p=0$ and $p=1$, and briefly explain why your answer makes sense in these two cases.
+
+\vspace{2.72in}
+
+\noin (b) Monty now opens Door 2, revealing a goat. So the contestant switches to Door 3. Given this information, find the conditional probability that the contestant will get the car.",1,1,1,0,0,0,0,0,0,0,0,0,1
+2018,2,,"\noindent 2. Let $X,Y \sim \Pois(\lambda)$ be i.i.d., with $\lambda > 1$. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\vspace{0.6in}
+
+
+\noindent (a) $P(X \leq Y)$  \underline{\phantom{blah}} $1/2$ 
+
+\vspace{1.2in}
+
+
+\noindent (b) $P(X+Y \leq 1)$  \underline{\phantom{blah}}  $3e^{-2\lambda}$
+
+\vspace{1.2in}
+
+\noindent (c)  $E\left(e^{X+Y}\right)$  \underline{\phantom{blah}} $e^{2\lambda}$
+
+\vspace{1.2in}
+
+\noindent (d)  $E(X \, | \, X+Y = 4) $  \underline{\phantom{blah}} $2$
+
+\vspace{1.2in}
+
+\noindent (e) $\var(X \, | \, X+Y = 4) $ \underline{\phantom{blah}} $1$
+
+\vspace{1.2in}
+
+\noindent (f)  $ E(X^2 - Y) $  \underline{\phantom{blah}} $\lambda^2$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2018,3,,"\noin 3. A coin with probability $p$ of Heads is flipped repeatedly. (Note that $p$ may not be $1/2$.) The tosses are independent. The sequence of outcomes can be divided into \emph{runs} (blocks of $H$'s or blocks of $T$'s), e.g., $HHHTTTTHTTTHH$ becomes $\boxed{HHH}\boxed{TTTT}\boxed{H}\boxed{TTT}\boxed{HH}$, which has $5$ runs, with lengths $3,4,1,3,2$, respectively.
+
+\medskip
+
+\noin (a) Assume for this part only that the coin is tossed exactly $n$ times. Find the expected number of runs.
+
+%\noin (b) Now let $n=4$. Let $X$ be the number of occurrences of $HH$ (for example, $THHT$ has $1$ occurrence and $HHHH$ has $3$ occurrences).  Find $\textrm{Var}(X)$. 
+
+\vspace{2.75in}
+
+\noin (b) Now assume the coin is flipped until the start of the 110th run (so the last toss begins and ends the 110th run). Find the expected length of the \emph{second} run.
+
+\vspace{2in}
+",0,0,0,1,1,1,1,0,0,0,0,0,0
+2018,4,,"\noin 4. Fred wants to sell his car. He decides to sell it to the first person who offers at least \$18,000 for it. The offers are independent Exponential r.v.s, each with mean \$12,000. Assume that he is able to keep collecting offers until he obtains one that meets his criterion. 
+
+\medskip
+
+\noindent (a) Find the expected number of offers Fred will have, including the offer he accepts. 
+
+\vspace{1.85in}
+
+\noindent (b) Find the expected amount of money that Fred will get for his car.
+
+\vspace{1.85in}
+
+\noin (c) Now assume that, instead of waiting until he gets an offer of at least \$18,000, Fred waits until he has 3 offers and then he accepts the largest of the 3 offers. Find the expected amount of money that he will get for his car. 
+",0,0,0,1,1,1,1,1,0,0,0,0,0
+2018,5,,"\noin 5. Cassie enters a casino with $X_0 = 1$ dollar and repeatedly plays the following game: with probability $1/3$, the amount of money she has increases by a factor of 3; with probability $2/3$, the amount of money she has decreases by a factor of $3$. Let $X_n$ be the amount of money she has after playing this game $n$ times. For example, $X_{1}$ is $3X_0$ with probability $1/3$ and is $3^{-1}X_0$ with probability $2/3$. 
+
+\medskip
+
+\noindent (a) Compute $E(X_1)$, $E(X_2)$ and, in general, $E(X_n)$. 
+
+\vspace{2in}
+
+\noindent (b) What happens to $E(X_n)$ as $n \to \infty$?  
+
+\vspace{1in}
+
+\noin (c) Let $Y_n$ be the number of times out of the first $n$ games that Cassie triples her money. What happens to $Y_n/n$ as $n \to \infty$?
+
+\vspace{1in}
+
+\noindent (d) What happens to $X_n$ as $n \to \infty$?",0,0,0,1,1,0,0,0,0,1,0,0,0
+2018,6,,"\noin 6. Let $X \sim \N(0,1)$, and $Y=|X|$. As usual, let $\Phi$ be the $\N(0,1)$ CDF.
+
+\medskip
+
+\noin (a) Let $F_Y$ be the CDF of $Y$ and $f_Y$ be the PDF of $Y$. Find $F_Y$ and $f_Y$, being sure to specify $F_Y(y)$ and $f_Y(y)$ for all real numbers $y$. Your answer for $F_Y$ can be in terms of $\Phi$. 
+
+\vspace{4.4in}
+
+\noin (b) Let $M$ be the MGF of $Y$. Find \emph{two} expressions for $M(t)$ as unsimplified integrals: one integral based on the PDF of $Y$, and one based on the PDF of $X$.
+",0,0,0,1,0,0,0,1,0,0,0,0,0
+2018,7,,"\noin 7. A basketball player will shoot $N \sim \Pois(\lambda)$ free throws in a game tomorrow. Let $X_j$ be the indicator of him making his $j$th free throw, and $X = X_1 + \dots + X_{N}$ be the total number of free throws he makes in the game (so $X=0$ if $N=0$). To model our uncertainty about how good a free throw shooter he is, let $p \sim \Beta(a,b)$. Given $p$, the player has probability $p$ of making a free throw and probability $q=1-p$ of missing it. Assume that $X_1,X_2,\dots$ are conditionally independent given $p$, and that $N$ is independent of $p,X_1,X_2,\dots$.
+ 
+\medskip
+
+\noin (a) Find the conditional distribution of $X$ given $N,p$.
+
+\vspace{1.25in}
+
+\noin (b) Find the conditional distribution of $X$ given $p$.
+
+\vspace{1.6in}
+
+\noin (c) Find the conditional distribution of $X$ given $N$, for the case $a=b=1$. 
+
+\vspace{2.2in}
+
+\noin (d) Find the conditional distribution of $p$ given $X,N$. 
+",0,0,0,1,0,0,1,0,0,0,0,0,0
+2018,8,,"\noindent 8.  (a) Alice and Bob are wandering around randomly, independently of each other, in a house with $M$ rooms, labeled $1,2,\dots,M$. Let $d_i$ be the number of doors in room $i$ (leading to other rooms, not leading outside). At each step, Alice moves to another room by choosing randomly which door to go through (with equal probabilities). Bob does the same, independently. The Markov chain they each follow is irreducible and aperiodic. Let $A_n$ and $B_n$ be Alice's room and Bob's room at time $n$, respectively, for $n=0,1,2,\dots$. 
+
+\smallskip
+
+\noin  Find $\displaystyle \lim_{n \to \infty} P(A_n = i, B_n = j)$.
+
+\vspace{2.37in}
+
+\noin (b) With setup as in (a), let $p_{ij}$ be the transition probability for going from room $i$ to room $j$. Let $t_{ik}$ be the expected first time at which Alice and Bob are in the same room, if Alice starts in room $i$ and Bob starts in room $k$ (note that $t_{ik} = 0$ for $i=k$). 
+
+\smallskip
+
+\noin Provide a system of linear equations, the solution of which would yield $t_{ik}$ for all  rooms $i,k$. 
+
+\smallskip
+
+\noin Hint: Condition on Alice's first move and Bob's first move.
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2019,1,,"\noin 1. There are three boxes: a box containing two gold coins, a box containing two silver coins, and a box containing one gold coin and one silver coin. You choose a random box and, without being able to see inside the box, randomly take out one of the two coins from that box. The chosen coin turns out to be gold.
+
+\medskip
+
+\noin (a) Given the above information, find the probability that the remaining coin in the chosen box is also gold. 
+
+\vspace{2.7in}
+
+\noin (b) For this part, instead of assuming that there is one box of each type, suppose that the contents of a box are \emph{independent} of the contents of the other boxes. Now for each box the probability is $a$ for two gold coins, $b$ for two silver coins, and $c$ for one gold coin and one silver coin, where $a,b,c$ are positive constants with $a+b+c = 1$. As before, you take a random coin from a randomly chosen box, and this coin is gold. Given this information,  find the probability that the remaining coin in the chosen box is also gold. ",1,1,1,0,0,0,0,0,0,0,0,0,0
+2019,2,,"\noindent 2. Let $X, Y, Z \sim \N(0,1)$ be i.i.d.~As usual, let $\Phi$ be the $\N(0,1)$ CDF. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\vspace{0.6in}
+
+
+\noindent (a) $P(X \leq Y \leq Z)$  \underline{\phantom{blah}} $1/3$ 
+
+\vspace{1.2in}
+
+
+\noindent (b) $P(3X \leq 4Y) $  \underline{\phantom{blah}}  $1/2$
+
+\vspace{1.2in}
+
+\noindent (c)  $P(3X \leq 4Y + 1)$  \underline{\phantom{blah}} $\Phi(0.25)$
+
+\vspace{1.2in}
+
+\noindent (d)    $\var(|X|)$  \underline{\phantom{blah}} $\var(X)$
+
+\vspace{1.2in}
+
+\noindent (e) $E(X^2 + e^Y + \Phi(Z)) $ \underline{\phantom{blah}} $2.5$
+
+\vspace{1.2in}
+
+\noindent (f)  $ E(\log(X^2+Y^2+Z^2)) $  \underline{\phantom{blah}} $\log(3)$
+",0,0,0,0,0,0,0,0,0,0,1,0,0
+2019,3,"% Geometric, First Success, conditional expectation, variance","\noin 3. A fair, six-sided die is rolled repeatedly, until it lands 6 for the first time. Let $N$ be the number of rolls (so the $N$th roll is a 6 and none of the previous rolls are 6's). 
+
+\medskip
+
+\noin (a) Find $E(N)$ and $E(N^2)$. 
+
+\vspace{2.3in}
+
+\noin (b) Let $X$ be the number of rolls that land 1. Find $E(X|N)$ and $E(X)$.
+",0,0,0,1,1,1,1,0,0,0,0,0,0
+2019,4,"% Expectation, indicator r.v.s
+","\noin 4. There are $t$ different types of toy. For each toy type, $k$ toys of that type are manufactured. There are $n$ toy collectors, where $kt = nj$ for some positive integer $j$. The toys are randomly placed into $n$ mystery boxes, with $j$ toys per box. All possible allocations are equally likely. Each collector then receives one of the mystery boxes,  completely randomly.  Let $X_i$ be the number of different toy types that collector $i$ gets (e.g., $X_i=1$ means  collector $i$ gets $j$ toys of the same type, and $X_i=j$ means collector $i$ doesn't get any duplicate toys). 
+
+\medskip
+
+\noin (a) Find $E(X_i)$. 
+
+\vspace{3in}
+
+\noin (b) Find the expected number of values of $i$ such that $X_i = j$, i.e., the expected number of toy collectors whose mystery box does not have any duplicate toys.
+",1,1,0,1,1,0,0,0,0,0,0,0,0
+2019,5,"% Poisson, chicken-egg, variance, MGFs
+","\noin 5. There are $N \sim \Pois(\lambda)$ voters in a certain election. Each voter votes for candidate A with probability $p$ and for candidate B with probability $q=1-p$, independent of other voters. Let $A$ and $B$ be the numbers of votes for candidate A and candidate B, respectively, and let $D=A-B$ be the difference. 
+
+\medskip
+
+\noin (a) Find the distribution of $A$.
+
+\vspace{1.8in}
+
+\noin (b) Find $\var(D)$.
+
+\vspace{2in}
+
+\noin (c) Find the MGF of $D$. Hint: The MGF of $N$ is given by $M_N(t) = e^{\lambda(e^t-1)}$.
+",0,0,0,1,1,0,1,0,0,0,0,0,1
+2019,6,"% CDFs, PDFs, LOTUS, Expo, memoryless property","\noin 6. Let $X,Y,Z$ be i.i.d.~$\Expo(1)$ and $W=X^2$. 
+
+\medskip
+
+\noin (a) Find the CDF and the PDF of $W$. Be sure to specify the CDF and the PDF everywhere.
+
+\vspace{3.1in}
+
+\noin (b) Find unsimplified expressions for $E(W^3)$ as integrals in two different ways, one based on the PDF of $X$ and one based on the PDF of $W$. 
+
+\vspace{2.1in}
+
+\noin (c) Find $E(XYZ  \, |  \, X > 1, Y > 4, Z > 10)$.  
+",0,0,0,1,1,1,0,1,0,0,0,0,0
+2019,7,"% Uniform, Beta, Beta-Binomial conjugacy, CDF, PDFs
+","\noin 7. Trials are being performed, where each trial has probability $p$ of success and probability $q = 1-p$ of failure. The parameter $p$ is unknown. Given $p$, the trials are independent. Suppose that $n$ trials have been performed so far, all of which were failures. The statistical consultant John Cook gave the following advice for what can be said about $p$ in this situation.
+
+\begin{quotation} 
+\vspace{-0.05in} 
+
+\noin \emph{The \textbf{rule of three} gives a quick and dirty way to estimate these kinds of probabilities. It says that if you've tested $n$ cases and haven't found what you’re looking for, a reasonable estimate is that the probability is less than $3/n$.}
+\end{quotation}
+
+\noin That is, Cook's claim is that, given that all $n$ trials so far have been failures, we can be reasonably confident that $p$ is less than $3/n$. The goal of this problem is to check Cook's claim and make it more precise. To quantify our uncertainty about $p$, we will take a Bayesian approach and treat $p$ as an r.v., with prior distribution $p \sim \Unif(0,1)$. 
+
+\medskip
+
+\noin (a) Find the prior probability (unconditional probability) that $p$ is less than $3/n$. Be sure to consider what happens for all integers $n \geq 1$. 
+
+\vspace{1.8in}
+
+\noin (b) Now assume that $n$ is large. Find a good approximation for the posterior probability (conditional probability given the observations) that $p$ is less than $3/n$. Express your answer as a decimal. Hint: Feel free to use the handy approximations $e^3 \approx 20$ and  $(1 + \frac{x}{n})^n \approx e^x$. 
+",1,1,0,1,0,0,0,1,0,0,0,0,0
+2019,8,% Markov chains,"\noindent 8.  There are $M$ points arranged in a circle, where one point is labeled as state $1$ and then the remaining points are labeled $2,3,\dots,M$ in clockwise order (with $M \geq 3$).  Consider a  Markov chain on $\{1,2,\dots,M\}$ that randomly moves one step clockwise or one step counter-clockwise at each stage. Specifically, one step of the chain is as follows: from the current state, move one step clockwise or one step counter-clockwise, with probability $p$ for moving clockwise, where $0<p<1$. Let $Q$ be the transition matrix of this chain.
+
+\medskip
+
+\noin (a) Find the sum of the entries in the $i$th row of $Q$, and the sum of the entries in the $j$th column of $Q$.
+
+\vspace{2in}
+
+\noin (b) Find the stationary distribution of the chain.
+
+\vspace{2in}
+
+\noin (c) Is the chain reversible? (If the answer to this depends on $p$, specify the values of $p$ for which the chain is reversible and the values of $p$ for which the chain is non-reversible.)",0,0,0,0,0,0,0,0,0,0,0,1,0
+2020,1,"% conditioning, LOTP, conditional independence
+","\noindent 1.   Beth will play two chess games tomorrow at a tournament. Let $D$ be the event that she gets drunk tonight, with $P(D) = 1/2$. For each of her two games tomorrow, her probability of winning is $p_1$ if $D$ occurs and $p_2$ if $D$ does not occur, with $0 < p_1 < p_2 < 1$. 
+
+\medskip
+
+\noin Suppose that her results are conditionally independent given her sobriety status. Let $W_1$ be the event that she wins the first game tomorrow and $W_2$ be the event that she wins the second game tomorrow. For simplicity, assume that all games must end in a win or a loss, so there are no draws (ties).
+
+\medskip
+
+\noin (a) Find  $P(W_1)$ and $P(W_1 \cap W_2)$. 
+
+\vspace{3.1in}
+
+%\noin (b) Given an intuitive explanation in words for why $P(W_1)P(W_2) < P(W_1 \cap W_2)$.
+
+\noin (b) Tomorrow night, after her games, if Beth won both games she will \emph{not} get drunk; if she lost both games she \emph{will} get drunk; and if she won one game and lost the other, she will flip a fair coin, and get drunk if and only if the coin lands Heads. Find the probability that Beth will get drunk tomorrow night, given that she gets drunk tonight.
+",1,1,1,0,0,0,0,0,0,0,0,0,0
+2020,2,"% symmetry of i.i.d. r.v.s, symmetry of a distribution, covariance, Jensen, Markov
+","\noin 2. Let $X, Y, Z, W$ be i.i.d.~(independent, identically distributed) continuous r.v.s. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\vspace{0.6in}
+
+\noindent (a) $P(X^2 + Y^2 + Z^2 > 110)$  \underline{\phantom{hello}}  $P(X>5)P(Y>6)P(Z > 7)$
+
+\vspace{1.2in}
+
+\noindent (b)  $P(X^2 + Y^2 + Z^2 > 111)$   \underline{\phantom{hello}} $ \frac{1}{37} E(X^2)$
+
+\vspace{1.2in}
+
+% \noindent (c) $P((X-Y)(X+Y) < 0) $  \underline{\phantom{blah}}  $1/2$
+
+\noindent (c) $P(X^2 + Y^4 < Z^2 + W^4)$  \underline{\phantom{hello}} $ \frac{1}{2}$ 
+
+\vspace{1.2in}
+
+\noindent (d)    $E(X^2 Y^4 Z^6)$  \underline{\phantom{hello}} $ (EX)^{12}  $
+
+\vspace{1.2in}
+
+\noindent (e) $E \left( (X-Y)^{3} \right) $ \underline{\phantom{hello}} $0$
+
+\vspace{1.2in}
+
+\noindent (f)  $ \var(X^2 + Y^4 + Z^6) $  \underline{\phantom{hello}} $\var(X^2 + X^4 + X^6)$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2020,3,"% conditioning, Bayes' rule, Expo, CDFs
+","\noin 3. Two weather forecasters, Cynthia and Giovanni, are predicting whether it will rain tomorrow in a certain location. For simplicity, suppose that a forecast is either ``it will rain"" or ``it will not rain"", rather than being probabilistic such as ``there is a 30\% chance of rain"". (There has been a lot of debate about how to interpret and evaluate probabilistic forecasts.)  Let $p$ be the prior probability that it will rain tomorrow. 
+
+\medskip
+
+\noin Find the probability that it will rain tomorrow, given that Cynthia forecasts that it \emph{will} rain and Giovanni forecasts that it will \emph{not} rain, in each of the following two scenarios. 
+
+\medskip
+
+\noin (a) Assume for this part only that (i) Cynthia's and Giovanni's forecasts are conditionally independent given that it rains tomorrow, and also conditionally independent given that it does not rain tomorrow, and (ii) the probability that Cynthia predicts rain given that it will rain is $a_1$,  the probability that Cynthia predicts no rain given that it will not rain is $b_1$, and the corresponding probabilities for Giovanni are $a_2$ and $b_2$. 
+
+\vspace{2in}
+
+\noin (b) Now assume instead that their forecasts are both derived from the same underlying satellite measurement of clouds. This measurement is a continuous r.v.~$T$. If it rains then $T \sim \Expo(\lambda_1)$, and if there is no rain then  $T \sim \Expo(\lambda_0)$. Let $c_1,c_2$ be positive constants with $c_1<c_2$. If $T>c_1$, then Cynthia forecasts that it will rain; otherwise, she forecasts no rain.  If $T>c_2$, then Giovanni forecasts that it will rain; otherwise, he forecasts no rain. 
+",0,1,1,1,0,0,0,1,0,0,0,0,0
+2020,4,"% Expectation, linearity, indicator r.v.s, Poisson approximation
+","\noin 4.  A group of $n$ people are comparing their birthdays. Assume that their birthdays are independent of each other. For simplicity, assume that a year has $360$ days (rather than $365$ or $366$). For (a), assume that these $360$ days are all equally likely as birthdays. 
+
+\medskip
+
+\noin (a) Let $X$ be the number of sets of three different people such that the three people in the set share the same birthday as each other. Find $E(X)$.  
+
+% (a) Let $I_{ijk}$ be the indicator of all three of persons $i,j,k$ having the same birthday, for $1 \leq i < j < k \leq n$.
+%
+% \medskip
+%
+% \noin Find $\cov(I_{123}, I_{234})$ and $\cov(I_{123}, I_{345})$.
+
+\vspace{2in}
+
+\noin (b)  Now assume instead that the 360 days are \emph{not} all equally likely as birthdays. A year consists of four seasons (winter, spring, summer, fall), with exactly 90 days per season. The probabilities of being born in winter, spring, summer,  fall are $\frac{3}{8}, \frac{1}{8},\frac{3}{8},\frac{1}{8}$, respectively. Within a season, the 90 days are equally likely as birthdays. Let
+ $$ n = 23 \textrm{ and } c =  \frac{1}{8^2 \cdot 90}.$$
+ 
+ \noin Find a simple but accurate approximation for the probability that there is at least one \emph{pair} of people who share the same birthday. Your answer can be left in terms of $c$ and $e$. 
+  
+\smallskip
+
+\noin Hint: First find the probability that persons 1 and 2 were both born on January 10 (assuming that January 10 is one of the winter days).",1,1,0,1,1,0,0,0,0,0,0,0,0
+2020,5,"% Poisson, LOTUS, chicken-egg","\noin 5. For a survey, $N$ participants are recruited, with $N - 1 \sim \Pois(\lambda)$. (Note that $N$ itself is not Poisson: subtracting $1$ from $N$ yields a Poisson. This ensures that $N$ will not be $0$, which is good since a survey with no participants is not much of a survey.)
+
+\medskip
+
+ \noin Each participant is asked a yes/no question. Suppose that each participant answers ``yes"" with probability $p$ and ``no"" with probability $q=1-p$, independent of other participants. Let $X$ be the number of participants who answer ``yes"" and $Y$ be the number who answer ``no"". So $X+Y =  N$. 
+
+\medskip
+
+\noin (a) Find $E(N)$ and $\var(N)$.
+
+\vspace{1.44in}
+
+\noin (b) Find $E\left( \frac{1}{N} \right)$. 
+
+\vspace{2.3in}
+
+\noin (c) Find $P(X=i,\,Y=j)$, where $i$ and $j$ are positive integers.
+",1,1,1,1,1,0,1,0,0,0,0,0,1
+2020,6,"% Normal, LOTUS, CDFs, MGFs
+","\noin 6.  Let $X,Y,Z \sim \N(0,1)$ be i.i.d. As usual, let $\Phi$ be the $\N(0,1)$ CDF and $\varphi$ be the $\N(0,1)$ PDF. Your answers to this problem can be left in terms of $\Phi$ and $\varphi$.  
+
+\medskip
+
+\noin (a) Find the CDF of $(3X+4Y)^6$. 
+
+\vspace{3in} 
+
+\noin (b) Find an expression for the MGF of $Xe^{-X^2}$, as an unsimplified integral. 
+
+\vspace{1.5in} 
+
+\noin (c) Find $P(5X + 6Y < 7Z + 10)$.",0,0,0,1,0,0,0,1,0,0,0,0,0
+2020,7,"%  Adam, Eve, Poisson process, Expo, memoryless property
+","\noin 7. Customers arrive at a store according to a Poisson process of rate $\lambda$ customers per hour. Let $T_n$ be the time at which the $n$th customer arrives (on a timeline with some starting time designated as time $0$). Recall that $T_n = X_1 + \dots + X_n$, where the $X_j$ are i.i.d.~$\Expo(\lambda)$.
+
+\medskip
+
+\noin (a)  Find $E(T_1 | T_1 > c)$ and $\var(T_1 | T_1 > c)$, where $c$ is a positive constant.
+
+\vspace{2.7in}
+
+\noin (b) A customer is a \emph{paying} customer if they make a purchase. Suppose that each customer is a paying customer with probability $p$, independent of other customers. Let $N$ be the number of customers needed to obtain a paying customer (including this paying customer). For example, the event $N = 7$ means that the first 6 customers did not make purchases but the 7th customer did make a purchase. Then $T_N = X_1 + \dots + X_N$ is the time at which the first paying customer arrives. Find $E(T_N)$ and $\var(T_N)$. 
+",0,0,0,1,1,1,1,1,0,0,0,0,0
+2020,8,"% Markov chains, reversibility, random walk on an undirected network
+","\noin 8. Consider the following Markov chain with state space $\{0,1,\dots,7\}$. From state $i$, the chain moves to a state $j$ connected to state $i$ by an edge in the diagram below, with the probability of moving to state $j$ proportional to the label on the edge. Assume that $a$ and $b$ are positive constants.
+
+\medskip
+
+\noin For example, from state 3, the chain can move to state $0$, $2$, or $4$, with transition probabilities $b/(2a+b), a/(2a+b), a/(2a+b)$, respectively. 
+
+\medskip
+
+\noin Find the stationary distribution of this chain. Check your answer in the simpler case $a=b$.
+\vspace{-0.1in}
+\begin{figure}[htbp] 
+   \centering
+   \includegraphics[width=4in]{figures/Markov_chain_110_final_2020.pdf} 
+\end{figure}
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2021,1,,"\noin 1. A student is working on a 3-part problem. Let $A,B,C$ be the events that the student gets parts (a), (b), (c) of the problem right, respectively. It is possible for the student to get a part right even after getting the previous part wrong, but getting a part right may make it easier for the student to get the next part right.
+
+\medskip
+
+\noin Let $P(A) = a$, $P(B|A) = P(C|B) = r$, and $P(B|A^c) = P(C|B^c) = w$. Suppose that $A$ and $C$ are conditionally independent given $B$, and that $A$ and $C$ are also conditionally independent given $B^c$.  Assume that $ w < r$.
+
+\medskip
+
+\noin (a) Find $P(C|A)$. 
+
+\vspace{2.2in}
+
+\noin (b) Find $P(C)$. 
+
+\vspace{2.2in}
+
+\noin (c) Are $A$ and $C$ independent? Give an intuitive explanation in words.",1,1,1,0,0,0,0,0,0,0,0,0,0
+2021,2,,"\noindent 2. Let $X,Y,Z$ be i.i.d.~(independent, identically distributed)~\emph{positive} r.v.s. Write the most appropriate of $\leq$, $\geq$, $=$, or ? in the blank for each part (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\medskip
+\medskip
+\medskip
+
+
+\noindent (a) $P(X+Y>Z)$ \underline{\phantom{blah}} $P(X>Z)$
+
+\vspace{0.8in}
+
+\noindent (b) $P(|X-Y| > 15)$  \underline{\phantom{blah}} $\frac{1}{110} \var(Z)$
+
+\vspace{0.8in}
+
+\noindent (c) $  P(X^3 > Y^2)  $  \underline{\phantom{blah}}  $P(X^3 > X^2)$
+
+\vspace{0.8in}
+
+
+\noindent (d) $E\left((X+Y+Z)^{110} \right)$
+\underline{\phantom{blah}} $  (3E(X))^{110}$
+
+\vspace{0.8in}
+
+\noindent (e)  $E(X | 3X+5)$  \underline{\phantom{blah}} $E(X|5X+7)$
+
+\vspace{0.8in}
+
+\noindent (f)  $\var(X+Y+Z)$  \underline{\phantom{blah}} $\var(X|X) +  \var(X|Y) +\var(Y|Y) +  \var(Y|Z) +  \var(Z|Z) + \var(Z|X)$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2021,3,,"\noin 3. A coin with probability $p$ of Heads is flipped $5$ times. The flips are independent. Let $X$ be the number of occurrences of the pattern $HHH$ (3 Heads in a row, e.g., $THHHT$ has $1$ occurrence and $HHHHH$ has $3$ occurrences).
+
+\medskip
+
+\noin (a) Find $E(X)$. 
+
+\vspace{3in}
+
+\noin (b) Find $\textrm{Var}(X)$. Check that your answer makes sense in the extreme cases $p=0$ and $p=1$.",1,1,0,1,1,0,0,0,0,0,0,0,0
+2021,4,,"\noindent 4. Emails arrive in an inbox according to a Poisson process of rate $\lambda$ emails per minute. Let $T_n$ be the time of arrival of the $n$th email (in minutes after some designated time $0$).
+
+\medskip
+
+\noin (a) Find  $E(T_2  \, | \, T_1 > 5)$.
+
+\vspace{2.5in}
+
+\noin (b)  Find $P(T_1 <  3 \, | \, T_1 < 9)$.
+
+\vspace{2.5in}
+
+
+\noin (c) Find $P(T_3 > 7)$, preferably without using calculus.
+",0,0,0,1,1,1,1,1,0,0,0,0,0
+2021,5,,"\noindent 5.  Each customer at a certain shop purchases a $\Bin(n,p)$ number of items, independent of other customers.  Let $q  = 1-p$. The shop may or may not be open tomorrow. Let $s$ be the probability that the shop is open tomorrow. If the shop is open, it will have a $\Pois(\lambda)$ number of customers tomorrow. If it is closed, it will (of course) have no customers. 
+
+\medskip
+
+\noin Let $X$ be the number of customers tomorrow who purchase at least one item and $Y$ be the number of customers  tomorrow who purchase no items. 
+
+\medskip
+
+\noin (a) Find $E(X)$.
+
+\vspace{2.7in}
+
+\noin (b) Find $P(X=x,\, Y=y)$, where $x$ and $y$ are positive integers.
+",0,0,0,1,1,1,1,0,0,0,0,0,0
+2021,6,,"\noin 6. The following method is often recommended as a way to check that a list of numbers (e.g., on a receipt) has been added at least approximately correctly: round each number on the list in some way, add the rounded numbers, and compare with what was originally stated to be the total. In this problem we will consider this method, with the values on the list generated as i.i.d.~$\Unif(0,100)$ r.v.s. 
+
+\medskip
+
+\noin Let $U_1,U_2,\dots,U_n$ be i.i.d.~$\Unif(0,100)$ r.v.s. Let $R_j$ be obtained from $U_j$  by rounding to the nearest multiple of ten. For example, if $U_j = 42.42$ then $R_j = 40$, while if $U_j = 67.123$ then $R_j = 70$. If  $U_j$ is an integer ending in $5$ then round up, e.g., if $U_j = 95$ then $R_j = 100$. Let 
+$$ X = \sum_{j=1}^n U_j, \, \textrm{ and } Y = \sum_{j=1}^n R_j. $$
+
+\medskip
+
+\noin (a) Find the distribution of $U_1 - R_1$.
+
+\vspace{2.1in}
+
+\noin (b) Find $E(X-Y)$ and $\var(X-Y)$. 
+
+\vspace{2.1in}
+
+\noin (c) Find the approximate distribution of $X-Y$, for $n$ large. 
+",0,0,0,1,1,0,0,1,0,1,0,0,0
+2021,7,,"\noin 7.  Let $X,Y,Z \sim \N(0,1)$ be i.i.d. As usual, let $\Phi$ be the $\N(0,1)$ CDF. Your answers to (a) and (b) can be left in terms of $\Phi$. 
+
+\medskip
+
+\noin (a) Find the CDF of $|3X+4Y+12Z|$.
+
+\vspace{2.5in}
+
+\noin (b) Find an expression for $E(\max(\Phi(X),\Phi(X^2)))$, as an unsimplified integral. 
+
+\vspace{2in}
+
+
+\noin (c) Find $E(\max(\Phi(X),\Phi(Y),\Phi(Z)))$, as a fully simplified number.
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2021,8,,"\noindent 8. A house has $n$ light switches, labeled from $1$ to $n$. At time $t=0$, all the light switches are off. At each time point $t=1,2,3,\dots$, one of the light switches is chosen uniformly at random and toggled (from off to on, or on to off). 
+
+\medskip
+
+\noin (a) The state of the system at any time can be expressed as $(a_1,a_2,\dots,a_n)$, where $a_j=1$ if switch $j$ is on, and $a_j=0$ if switch $j$ is off. Let the set of all states be labeled from $1$ to $2^n$ in some fixed way, e.g., if $n=2$ we could label $(0,0),(0,1),(1,0),(1,1)$ as $1,2,3,4$, respectively. 
+
+\medskip
+
+\noin Let $X_t$ be the label for the state of the system at time $t$.  In the first row of the transition matrix for the Markov chain $X_0,X_1,\dots$, how many $0$'s are there? 
+
+\vspace{1.10in}
+
+
+\noin (b) Determine the stationary distribution of the Markov chain $X_0,X_1,\dots$ from (a).
+
+\vspace{2in}
+
+\noin (c) Let $Y_t$ be the number of switches that are on at time $t$. Determine the stationary distribution of the Markov chain $Y_0,Y_1,\dots$.
+
+\smallskip
+
+\noin Hint: The stationary distribution of $Y_0,Y_1,\dots$ is a famous named distribution. One approach is to use a story to give an intuitive answer for what the distribution should be, and then check a certain condition to verify your intuitive answer mathematically.",0,0,0,0,0,0,0,0,0,0,0,1,0
+2022,1,,"\noin 1. There are $n$ people who work at a certain company. It is suspected that there is a spy at the company, who is stealing secrets for a rival company. Assume that there is at most one spy at the company, and the unconditional probability that there is a spy is $1/2$. Trying to find the spy (if there is one), $k$ out of the $n$ people are chosen randomly and given background checks. Assume that $1 \leq k \leq n$, the $k$ people are chosen \emph{without replacement},  and all sets of $k$ people are equally likely to be chosen.
+
+\medskip
+
+\noin Anyone who is given the background check is either deemed to have passed or to have failed. A non-spy who is given the background check will pass with probability 1. A spy who is given the background check will pass with probability $p$ and fail with probability $q = 1 - p$. 
+
+\medskip
+
+\noin It is observed that all of the $k$ people pass the background checks. Given this information, find the probability that there is a spy at the company. Also, check what your answer reduces to in the extreme case where $p = 1$ and in the extreme case where $p = 0$ and $k = n$, and briefly discuss whether your answer makes sense in these cases.",1,1,1,0,0,0,0,0,0,0,0,0,0
+2022,2,,"\noindent 2. Let $X$ and $Y$ be r.v.s with the same distribution. They are \emph{not necessarily independent}. The support of $X$ is $\{0,1,2,\dots\}$, $E(X) = 1/2$, and $\var(X) = 3/4$. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\vspace{0.33in}
+
+
+\noindent (a) $P(X = 0) $  \underline{\phantom{blah}}  $1/2$
+
+\vspace{1.2in}
+
+
+\noindent (b) $P( X = 1)$  \underline{\phantom{blah}} $P(Y! \, = \,1)$
+
+\vspace{1.2in}
+
+\noindent (c)  $P( X = 2)$  \underline{\phantom{blah}} $P(Y! \, = \, 2)$
+
+\vspace{1.2in}
+
+\noindent (d) $E( \sqrt{1 + X + Y})$  \underline{\phantom{blah}} $\sqrt{2}$
+
+\vspace{1.2in}
+
+\noindent (e) $E(XY)$  \underline{\phantom{blah}} $1$
+
+\vspace{1.2in}
+
+\noindent (f)  $\var(X+Y)$  \underline{\phantom{blah}} $2$
+",0,0,0,0,0,0,0,0,0,0,1,0,0
+2022,3,,"\noin 3.  Sheila is applying for jobs. She will have a $\Pois(\lambda)$ number of interviews. For each of her interviews, she will get an offer with probability $p$, and will not get an offer with probability $q = 1 - p$, independent of her other interviews (where $0<p<1$).
+
+\medskip
+
+\noin (a) Find the probability that Sheila will have at least one interview that results in an offer and at least one interview that does not result in an offer. 
+
+
+\vspace{3in}
+
+\noin (b) Let $A$ be the event that Sheila's last interview, and \emph{only} that interview, will yield an offer. (If Sheila does not get any interviews, then $A$ does not occur.) Find $P(A)$. 
+
+\smallskip
+
+\noin Hint: First consider $P(A | N = n)$, where $N$ is the number of interviews that Sheila has.
+",1,1,1,1,0,0,1,0,0,0,0,0,1
+2022,4,,"\noin 4. There are $2n$ incoming first year students at a certain college. They will all live in a dorm with $n$ rooms, with $2$ students assigned to each room. The roommate assignments are generated completely randomly (with all possibilities equally likely). 
+
+\medskip
+
+\noin (a) Suppose that $2s$ of the students tend to sleep early, and $2n - 2s$ of the students tend to stay up late.  Find the probability that the roommate assignments will be such that there is no roommate pair in which one student tends to sleep early and the other student tends to stay up late. Express your final, fully simplified answer in terms of binomial coefficients (\emph{not} factorials, sums of many terms, or products of many terms).
+
+\vspace{3.5in}
+
+
+\noin (b) Just before the start of the students' sophomore year, the roommate assignments are re-randomized: the students are again split  randomly into roommate pairs, independent of their previous roommate assignments. Find the expected number of roommate pairs for their sophomore year that are the same as for their first year, i.e., how many sophomore year roommate pairs there are such that the pair were also roommates in their first year. Your final, fully simplified answer should \emph{not} have binomial coefficients, factorials, sums of many terms, or products of many terms. 
+",1,1,0,1,1,0,0,0,0,0,0,0,0
+2022,5,,"\noin 5. Bert is an avid bird-watcher. Tomorrow he will go bird-watching at a beautiful park. He will spend $T \sim \Expo(\lambda)$ minutes at the park. 
+
+\medskip
+
+\noin (a) There are $s$ different species of birds that can be found at this park. Let $X_j$ be the number of birds of species $j$ that Bert will see, for $j \in \{1,2,\dots,s\}$. Suppose for this part only that Bert will see exactly $n$ birds at the park tomorrow, that the species of these $n$ birds are independent, and that each bird is of species $j$ with probability $p_j$ for $j \in \{1,2,\dots,s\}$, where $p_j > 0$ and $p_1+\dots+p_s = 1$. Find $\cov(X_1,X_2)$. 
+
+\vspace{2.8in}
+
+\noin (b) Let $N$ be the number of birds that he sees. Given that $T=t$, the conditional distribution of $N$ has mean $at$ and variance $bt$, with $a$ and $b$ positive constants. Find $E(N)$ and $\var(N)$. 
+
+\vspace{2.6in}
+
+\noin (c) Find the expected amount of time that Bert will spend at the park, given that he spends at least $110$ minutes there. 
+",0,0,0,1,1,1,1,1,1,0,0,0,0
+2022,6,,"\noin 6. Let $X,Y,Z$ be i.i.d.~$\N(0,1)$, $T = |5X + 6Y - 7Z|$, and $V = \Phi(X)$, where (as usual) $\Phi$ is the  $\N(0,1)$ CDF.  Your answers for (a) and (b) can be in terms of $\Phi$.
+
+\medskip
+
+\noin (a) Find the CDF of $T$.  
+
+\vspace{3in}
+
+\noin (b) Find an unsimplified expression for $E\left( V^2  e^X\right)$ as a single integral. 
+ 
+ \vspace{1.85in}
+ 
+ \noin (c) Find $E \left(V^2 e^Z \right)$. 
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2022,7,,"\noin 7. A social network, FriendFriends, has $m$ users, with ID numbers from $1$ through $m$. For each pair of users, either they are \emph{friends} (on the social network) or they are not. Friendships are reciprocated, i.e., if user $i$ is friends with user $j$, then user $j$ is friends with user $i$. Users are not friends with themselves, i.e., user $i$ is not friends with user $i$. For simplicity, assume that friendship statuses are not changing over time. Let $c_j$ be the number of friends of user $j$. Assume that $c_1,\dots,c_m$ are not all equal, and that $c_j > 0$ for all $j$. 
+
+\medskip
+
+\noin A commentator argues, ``FriendFriends is harmful for emotional well-being. Aside from being an addictive time sink, it encourages unhealthy comparisons about numbers of friends. On average, your friends have more friends than you!""
+
+\medskip
+
+\noin This problem explores the claim in the commentator's last sentence. The main goal is to show that, in the sense defined below, the average number of friends of a random \emph{user} is less than the average number of friends of a random \emph{friend}.  
+
+\medskip
+
+\noin  Define the average number of friends of a random \emph{user} to be $\frac{1}{m} \sum_{j=1}^m c_j$.  
+
+ \medskip
+
+\noin (a)   Define the average number of friends of a random \emph{friend} to be the following expected value. For each user, the ID numbers of that user's friends are written down on slips of paper, with one friend per slip of paper. So there are $\sum_{j=1}^m c_j$ slips of paper in total. One of these slips of paper is chosen completely randomly. Find the expected number of friends of the user whose ID number is on the chosen slip of paper. (Your answer should involve sums written in terms of $c_1,\dots,c_m$.)
+
+\vspace{2.2in}
+
+\noin (b) Show that, as defined above,  the average number of friends of a random \emph{user} is less than the average number of friends of a random \emph{friend}. For full credit a mathematical argument is needed, but substantial partial credit is available for a convincing intuitive explanation.
+
+\smallskip
+
+\noin Hint: Consider $\var(X)$, where $X$ is the number of friends of a randomly chosen user.
+",1,1,0,1,1,1,0,0,0,0,0,0,0
+2022,8,,"\noindent 8. The FriendFriends social network, which was described in the previous problem, is introducing a new feature called User of the Day (UOTD). Use notation and assumptions as in the first paragraph of the previous problem (so \emph{read} that paragraph before continuing with this problem, but it isn't necessary to \emph{solve} the previous problem before this one).
+
+\medskip
+
+\noin Each day, one and only one user will be proclaimed as UOTD (which gives them a fancy badge on their profile picture). On day 1, user 1 will be the UOTD. Subsequently, the UOTD each day gets to choose the UOTD for the following day. Suppose that the current UOTD always chooses one of their friends as the next UOTD, with equal probabilities for all their friends. 
+
+\medskip
+
+\noin Let $X_n$ be the ID number of the UOTD on day $n$. So $X_1 = 1$, $X_2$ is the ID number of a random friend of user 1, $X_3$ is the ID number of a random friend of user $X_2$, etc. Assume that for all $j \in \{1,2,\dots,m\}$ and all $n \geq 7$, $P(X_n = j) > 0$.
+
+\medskip
+
+\noin Find $$\lim\displaylimits_{n \to \infty} P(X_n = j),$$ in terms of $c_1,\dots,c_m$. 
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2023,1,,"\noin 1. Bayes' serum is a medicine used to treat a disease called conditionitis. A company  called Normal Distributors has manufactured a batch of $n$ doses of Bayes' serum. Each dose was made either in Lab A or in Lab B, with probability $a$ for Lab A and probability $b$ for Lab B (with $a+b=1$). Where a dose was made is independent of where the other doses were made. Normal Distributors does not keep track of which doses were made in which lab.
+
+\medskip
+
+\noin Every dose that came out of Lab A is effective, but there may have been contamination in Lab B. Let $c$ be the probability that there was contamination in Lab B.  If there was contamination in Lab B, then every dose from that lab is ineffective. If there was no contamination, then every dose from Lab B is effective. 
+
+\medskip
+
+\noin To assess the situation, a simple random sample of size $k$ doses is chosen and tested (all sets of $k$ out of the $n$ doses are equally likely). All $k$ of these doses are found to be effective.
+
+\medskip
+
+\noin (a) Given this information, find the probability that there was contamination in Lab B. Express your answer as a single fraction.  Also, check what your answer reduces to in the extreme case $a = 1$, and briefly discuss whether your answer makes sense in this case.
+
+\vspace{2.75in}
+
+
+\noin (b) Given this information, find the probability that all $n$ doses in the batch are effective. Express your answer as a single fraction. Also, check what your answer reduces to in the extreme case $c=1$, and briefly discuss whether your answer makes sense in this case.",1,1,1,0,0,0,0,0,0,0,0,0,0
+2023,2,,"\noindent 2. Let $X,Y,Z,W$ be i.i.d.~$\N(0,1)$ r.v.s. As usual, let $\Phi$ be the $\N(0,1)$ CDF and, for any event $A$, let $I(A)$ be the indicator r.v.~of $A$. Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\bigskip
+
+\noindent (a) $P(2X^2 + Y^2 \geq 2Z^2 + W^2) $  \underline{\phantom{blah}}  $0.5$
+
+\vspace{1.2in}
+
+
+\noindent (b) $P(2X^2 + Y^2 \geq 6) $  \underline{\phantom{blah}}  $0.5$
+
+
+\vspace{1.2in}
+
+\noindent (c)  $P( X^2 + Y^2  \geq 5^2 \mid X^2 + Y^2 \geq  4^2)$  \underline{\phantom{blah}} $P(X^2 +Y^2 \geq 3^2)$
+
+\vspace{1.2in}
+
+\noindent (d) $P(Z + W < 3  \mid  Z - W < 3)$ \underline{\phantom{blah}} $P(Z + W  < 3)$
+
+\vspace{1.2in}
+
+\noindent (e) $E(e^{3X-Y})$  \underline{\phantom{blah}} $e^{5}$
+
+\vspace{1.2in}
+
+ \noindent (f)  $E\left( \sqrt{ 42\Phi(Z) + 8I(Z>0)}\right)$ \underline{\phantom{blah}} $5$",0,0,0,0,0,0,0,0,0,0,1,0,0
+2023,3,,"\noin 3. In Jane Austen's \emph{Emma}, Harriet Smith reports to Emma the following coincidence about Robert Martin and herself:
+\vspace{-0.05in}
+\begin{quotation}
+\noin \emph{He was four-and-twenty the 8th of last June, and my birthday is the 23d---just a fortnight and a day's difference! which is very odd!}
+\end{quotation}
+\vspace{-0.05in}
+
+\noin A fortnight is two weeks, so ``a fortnight and a day"" is 15 days. Find a simple, accurate approximation for the probability that, in a group of $9$ people, there is at least one pair of people who have birthdays within 15 days of each other. For example, today (December~13) is Taylor Swift's birthday and December 21 is Samuel L.~Jackson's birthday, so they have this coincidence. If you were born between November~28 and December~28 (inclusive) then you and Taylor Swift have this coincidence, while if you were born between December~6 and January~5 (inclusive) then you and Samuel L.~Jackson have this coincidence.
+
+\medskip
+
+\noin Make the usual assumptions as in the birthday problem: there are 365 days in a year, all equally likely, and people's birthdays are independent. To simplify calculations, you can use the approximations $365 \approx 360$ and $31 \approx 30$, and Taylor's result that $e^x \approx 20(x-2)$ if $x \approx 3$.
+
+\medskip
+
+\noin Express your answer as a decimal with two digits after the decimal point.
+",1,1,0,1,0,0,1,0,0,0,0,0,1
+2023,4,,"\noin 4. A book has $N \sim \Pois(\lambda)$ typos. Two proofreaders, Prue and Frida, independently read the book. Prue catches each typo with probability $p_1$ and misses it with probability $q_1=1-p_1$, independently, and likewise for Frida, who has probabilities $p_2$ of catching and $q_2 = 1 - p_2$ of missing each typo. Let $U$ be the number of  typos caught by neither proofreader and $T$ be the number of typos caught by at least one of the proofreaders.
+
+\medskip
+
+\noin (a) Find $P(U \geq 1 \mid T \geq 2)$. Express your answer only in terms of $\lambda, q_1, q_2$.
+
+\vspace{3.6in}
+
+\noin (b) Find $E(N \mid T = t)$ and $\var(N \mid T = t)$. Express your answers only in terms of $\lambda, q_1, q_2, t$. 
+",0,0,0,1,1,1,1,0,0,0,0,0,1
+2023,5,,"\noin 5. In Statland, three shields have just been put in place, to protect the realm from evil forces called p-hackers. Each shield works for an $\Expo(1/60)$ amount of time, independently, with time measured in years. As long as at least one shield is working, the realm will be safe. 
+
+\medskip
+
+\noin (a) Find the expected amount of time (in years) until none of the shields are working.
+
+\vspace{4.2in}
+
+\noin (b) A shield costs $c$ dollars per year to maintain. So for a shield that is operational for $t$ years, the maintenance cost is $ct$ dollars. Find the distribution of the total maintenance cost (in dollars) of the three shields.
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2023,6,,"\noin 6. Beth is playing in a chess tournament. She will play $n$ games. The outcomes of the games are independent. Each game ends in a win for Beth with probability $p_1$, a draw with probability $p_2$, and a loss with probability $p_3$, where $p_1+p_2+p_3=1$. In this tournament, a player receives 3 points for a win, 1 point for a draw, and 0 points for a loss (traditionally, a win is worth 1 point and a draw is worth 0.5 points, but this tournament is using a different system, to incentivize playing for a win). 
+
+\medskip
+
+\noin Let $S$ be the number of points that Beth scores.
+
+\medskip
+
+\noin (a) Find $\var(S)$. 
+ 
+\vspace{3.6in}
+
+
+ \noin (b) Find the conditional PMF of $S$, given that Beth loses no games. 
+ 
+
+ \medskip
+",0,1,1,1,1,0,1,0,0,0,0,0,0
+2023,7,,"\noin 7.  (a) Let $U_1,\dots,U_5$ be i.i.d.~$\Unif(0,1)$ r.v.s and $M = \max(U_1,\dots,U_5)$. Find an expression for $E(M^2 e^M)$ as a single integral.  
+
+\vspace{2.35in}
+
+\noin (b)  Let $Y \sim \Beta(5,1)$. Find the CDF of $Y$.
+
+\vspace{2.35in}
+
+\noin (c) Using probability rather than calculus, find 
+\vspace{-0.05in}
+$$\int_0^1 \left(x - \frac{1}{2} \right)^2  \frac{1}{\sqrt{x(1-x)}}dx.$$ 
+\noin Hint: Use LOTUS and the result for the mean and variance of a Beta random variable.",0,0,0,1,1,0,0,1,0,0,0,0,0
+2023,8,,"\noindent 8. According to Louis Sachar:
+\vspace{-0.05in}
+\begin{quotation}
+\noin \emph{Wayside School was accidentally built sideways. It was supposed to be only one story high, with thirty classrooms all in a row. Instead it is thirty stories high, with one classroom on each story. The builder said he was very sorry.}
+\end{quotation}
+\vspace{-0.05in}
+Actually, there are only 29 stories. Label the floors (stories) of the building $1,2, \dots, 29$, from lowest to highest, so floor $1$ is at the ground level and floor $29$ is the top floor. An elevator has just been installed in Wayside School. However, the builder forgot to put buttons in the elevator. The builder said he was very sorry. 
+
+\medskip
+
+\noin The elevator randomly ``chooses"" which floor to stop at, following a Markov chain. On each step of the chain, the elevator either goes down 2 floors, down 1 floor, up 1 floor, or up 2 floors (or whichever of these are possible). 
+
+\medskip
+
+\noin For example, if the elevator is currently stopped at floor $22$, then its next stop will be at floor 20, 21, 23, or 24. If the elevator is currently stopped at floor $1$, then its next stop will be at floor 2 or 3 (since there is no floor $-1$ or $0$). On each step, the elevator ``chooses"" among the possible next stops with equal probabilities. 
+
+\medskip
+
+\noin The elevator starts at floor $1$; call this the $0$th stop. Let $X_n$ be the floor of the $n$th stop of the elevator. So $X_0 = 1$, and $P(X_1 = 2) = 1/2 = P(X_1 = 3).$ 
+
+\medskip
+
+\noin (a) Let $T$ be the smallest value of $n$ such that $X_n \geq 3$. Find $E(T)$. 
+
+\vspace{3in}
+
+\noin (b) Find the stationary distribution of the chain $X_0,X_1,X_2,\dots$.
+",0,0,0,0,0,0,0,0,0,0,0,1,0
+2024,1,"% Bayes' rule, LOTP, extreme cases 
+","\noin 1. Frida is in love with Prue but doesn't know whether Prue returns her feelings. Luckily, Frida's brother Fred does know. Unable to stand the suspense any longer, Frida texts Fred to ask whether Prue loves her or only likes her as a friend. Fred replies, \nobreak ``TRUE LORE"". 
+
+\medskip
+
+\noin When Fred types a letter he types it correctly with probability $p$, and makes a typo with probability $q = 1-p$. If he makes a typo, the typed letter is equally likely to be any of the $25$ possible wrong letters. (For simplicity, ignore capitalization.) The typed letters are conditionally independent given what message Fred intended to send.
+
+\medskip
+
+\noin Suppose that Fred intended to send Frida one of the following three possible messages: ``TRUE LOVE"", ``PRUE LOVE"", or ``PRUE LIKE"". The prior probabilities (unconditional, before knowing what text he actually sent) are $1/3$ for each of these messages. Fred would intend to send one of the first two of these three messages if and only if Prue loves Frida.
+
+\medskip 
+
+\noin (a) Find the probability that Prue loves Frida, given the above information. To simplify calculations, you can express your answer in terms of $p,q,$ and $c$, where $c=1/25$. 
+
+\vspace{4.35in}
+
+\noin (b) It turns out that Fred is a careful typist; he doesn't like having to be corrected by his sister or his best friend, both of whom are proofreaders. So $q$ is small. Give an intuitive explanation in words for what the probability from (a) should approximately be in this case.
+",1,1,1,0,0,0,0,0,0,0,0,0,0
+2024,2,"% inequalities, symmetry, sample mean, Chebyshev's inequality, CLT, Jensen, conditional expectation, Adam's law
+","\noindent 2. Let $X_1,X_2,\dots$ be i.i.d.~continuous r.v.s.~with mean $\mu$ and  variance $\sigma^2$, where $\sigma > 0$. As usual, let $\Phi$ be the $\N(0,1)$ CDF and
+$$\bar{X}_n = \frac{X_1+\dots+X_n}{n}.$$ Write the most appropriate of $\leq$, $ \geq$, $=$, or ?~in each blank (where ``?"" means that no relation holds in general). It is \emph{not} necessary on this problem to justify your answers.
+
+\medskip
+\smallskip
+
+\noindent (a) $P( \max(X_1,X_2,X_3,X_4) = X_1) $  \underline{\phantom{blah}}  $0.25$
+
+\vspace{1.10in}
+
+
+\noindent (b) $P\left(\left| \bar{X}_{4} - \mu \right| \geq  0.5 \right) $  \underline{\phantom{blah}}  $\sigma^2$ 
+
+\vspace{1.10in}
+
+\noindent (c)  $\displaystyle \lim_{n \to \infty} P\left( \sqrt{n}(\bar{X}_n - \mu) \leq 1\right)$  \underline{\phantom{blah}}  $\Phi(1)$
+
+\vspace{1.10in}
+
+\noindent (d) $\displaystyle \lim_{n \to \infty} P\left( \sqrt{n}(\bar{X}_n - \mu) \leq \sigma \right)$  \underline{\phantom{blah}}  $\Phi(1)$
+
+\vspace{1.10in}
+
+\noindent (e) $E\left( (X_1^2 + X_2^2)^{10} \right)$  \underline{\phantom{blah}} $1000( \mu^2 +  \sigma^2)^{10}$
+
+%\noindent (e) $E\left( \sqrt{X_1^2+X_2^2+X_3^2+X_4^2} \right)$  \underline{\phantom{blah}} $2 \sqrt{\mu^2 + \sigma^2}$
+
+\vspace{1.10in}
+
+ \noindent (f)  $E(E(X_1 \mid X_1 + X_2)) + \var(E(X_1 \mid X_3 + X_4)) $ \underline{\phantom{blah}} $\mu$
+",0,0,0,0,0,0,0,0,0,0,1,0,0
+2024,3,"% Poisson approximation, expectation, linearity, indicator r.v.s, axioms of probability","\noin 3. By a remarkable coincidence, there are three Stat 110 TFs named Emma. This problem studies such coincidences. According to data from the Social Security Administration, for babies born in the U.S.~in the years 2000--2009 the most common first name was Jacob, and the proportion that were named Jacob is between $0.0065$ and $0.0066$. Let $k$ be the number of first names represented among these babies. Label these names as name 1, name 2, \dots, name $k$, in alphabetical order. (So these are the $k$ different names that at least one of these babies has.) Let $p_j$ be the proportion of these babies that have name $j$.
+
+\medskip
+
+\noin Consider a group of $n$ people, with $n \geq 3$. Their first names were chosen randomly from the $k$ names described above, with name $j$ having probability $p_j$. Their names are independent. Find a good approximation for the probability that, among the $n$ people, there are three (or more) people with the same first name. (Your answer should be in terms of $n,p_1,\dots,p_k$.)
+",1,1,0,1,0,0,1,0,0,0,0,0,0
+2024,4,"% Poisson, Binomial, chicken-egg, symmetry","\noin 4. A basketball player shoots $M \sim \Pois(\lambda)$ successful shots in a game (so $M$ does not include missed shots). Each of these shots scores either 2 points or 3 points, depending on where the shot was taken from. Each of these shots has probability $p$ of being a 3-point shot, independently. Let $S$ be the number of points that the player scores from these $M$ shots. 
+
+\medskip
+
+\noin (a) Find the conditional distribution of the number of 3-point shots that the player makes in the game, given the number of 2-point shots that the player makes in the game.
+
+\vspace{2.5in}
+
+\noin (b) Find the conditional PMF of $S$ given $M = m$, where $m$ is a positive integer.",0,0,0,1,0,0,1,0,0,0,0,0,0
+2024,5,"% expectation, linearity, indicator r.v.s, symmetry
+","\noin 5. Statistically Significant Others is a dating app with $n$ users (where $n \geq 2$). Label the users $1,2,\dots,n$. For any pair of users $\{i,j\}$ (with $i \neq j$), the app assigns a \emph{compatibility score} $X_{ij}$. The higher the score, the more compatible the app predicts that they would be in a relationship. It doesn't matter which order $i$ and $j$ are listed in when rating their compatibility, so $X_{ij} = X_{ji}$. Suppose that the $X_{ij}$ (for $i<j$) are i.i.d.~continuous~r.v.s.
+
+\medskip
+
+\noin The app calls a pair of users $\{i,j\}$ a \emph{mutual match} if, according to the compatibility scores, user $i$ is the user most compatible with user $j$, and user $j$ is the user most compatible with user $i$. Find the expected number of mutual matches. ",1,1,0,1,1,0,0,0,0,0,0,0,0
+2024,6,"% Expo, memoryless property, First Success, discrete and continuous, PMF
+","\noin 6. Fred is in Blotchville, waiting for an important package to be delivered. Let $T$ be the time until the package is delivered (measured in hours, where time $0$ is the instant when Fred places the order). The delivery system there is very chaotic, so $T \sim \Expo(\lambda)$.
+
+\medskip
+
+\noin (a) Find $E(T \mid T > c)$ and $\var(T \mid T > c)$, where $c$ is a positive constant.
+
+\vspace{2.5in}
+
+\noin (b) The package will be left outside Fred's house, with no notification provided. Fred has work to do, so he can't  \nobreak continuously stare out the window to see exactly when the package arrives. Instead, he checks once per hour whether it has arrived: 1 hour after placing the order, 2 hours after placing the order, etc., until he has the package. Let $X$ be the number of times that Fred checks for the package. Find the distribution of $X$.",0,0,0,1,1,1,1,1,0,0,0,0,0
+2024,7,"% Normal, Chi-Square, Gamma, covariance, MGF, LOTUS
+","\noin 7. Let $X$ and $Y$ be i.i.d.~$\N(0,1)$ r.v.s, and $T = X^2 + Y^2$. 
+ 
+ \medskip
+ 
+ \noin (a) The distribution of $T$ appears \emph{three} times on our table of distributions! Which three famous distributions does $T$ follow? Be sure to specify both the names and the parameters. Justification is not required for this part.
+ 
+ \vspace{2.25in}
+ 
+ \noin (b) Find $\cov(T,X)$. 
+ 
+ \vspace{3.21in}
+ 
+ \noin (c) Let $M$ be the MGF of $\Phi(X^3) + \cos(Y).$ Find an expression for $M(t)$, in terms of two unsimplified integrals.
+",0,0,0,1,1,0,0,1,0,0,0,0,0
+2024,8,"% Markov chains, random walk on an undirected network, stationary distribution
+","\noindent 8. There are $10$ people, labeled $1$ through $10$. There are $10$ books of Stat 110 lore, also labeled $1$ through $10$. For each $j$, person $j$ has read books $1$ through $j$ (and not any of the other books), e.g., person $1$ has read only book $1$, and person $10$ has read all of the books.
+
+ \medskip
+ 
+ \noin A Markov chain on the state space $\{1,2,\dots,20\}$ proceeds as follows. States $1$ through $10$ correspond to people, and states $11$ through $20$ correspond to books. Specifically, state $j$ corresponds to person $j$, and state $j+10$ corresponds to book $j$, for $j=1,2,\dots,10$.
+ 
+ \medskip
+ 
+ \noin If the current state of the chain corresponds to person $j$, then the next move is to the state corresponding to a random book that person $j$ has read, with all such books equally likely. If the current state corresponds to book $j$, then the next move is to the state corresponding to a random person who has read that book, with all such people equally likely. Find the stationary distribution of this chain.
+",0,0,0,0,0,0,0,0,0,0,0,1,0

@@ -38,9 +38,14 @@ def study_break():
     return render_template("break.html")
 
 @app.route("/")
-@login_required
 def index():
-    return(apology("TODO"))
+    """Public landing page for guests; dashboard for logged-in users"""
+    # If user is logged in, show dashboard with large links
+    if session.get("user_id"):
+        return render_template("dashboard.html")
+
+    # Otherwise, show the public homepage
+    return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
