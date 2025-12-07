@@ -49,6 +49,38 @@ def _get_latex_macros() -> str:
         _LATEX_MACROS_CACHE = ""
     return _LATEX_MACROS_CACHE
 
+
+def _rewrite_image_paths(html: str) -> str:
+    """Rewrite image src attributes from Pandoc output to point to Flask static files.
+
+    Assumes you've put PNGs in static/figures with the same base names as the
+    LaTeX figures.
+    """
+    if not html:
+        return html
+
+    def repl(match):
+        prefix, src, quote = match.group(1), match.group(2), match.group(3)
+        src_norm = src.lstrip("./")  # remove leading ./ but KEEP no leading /
+
+        # Case 1: src="figures/chain15.pdf" or "figures/chain15.jpg" or "figures/chain15.png"
+        if src_norm.startswith("figures/"):
+            rel = src_norm[len("figures/"):]  # "chain15.pdf"
+            base, ext = os.path.splitext(rel)
+            # Always point to PNG under /static/figures/
+            return f'{prefix}/static/figures/{base}.png{quote}'
+
+        # Case 2: src="static/figures/chain15.png" (missing leading slash)
+        if src_norm.startswith("static/figures/"):
+            return f'{prefix}/static/{src_norm[len("static/") :]}{quote}'
+
+        # Otherwise, leave it alone
+        return f"{prefix}{src}{quote}"
+
+    pattern = re.compile(r'(<img\b[^>]*\bsrc=["\'])([^"\']+)(["\'])', flags=re.IGNORECASE)
+    return pattern.sub(repl, html)
+
+
 def _clean_latex_text(text: str) -> str:
     """Return a copy of LaTeX text with leading TeX comment markers removed per-line.
 
@@ -67,6 +99,18 @@ def _clean_latex_text(text: str) -> str:
     # Remove leading \noin or \noindent at the very start (plus any following whitespace)
     cleaned = re.sub(r'^\s*\\noin\b\s*', '', cleaned)
     cleaned = re.sub(r'^\s*\\noindent\b\s*', '', cleaned)
+
+    # Pandoc's LaTeX math parser does not support the low-level primitive
+    # \displaylimits (used to alter operator limit placement). Replace it
+    # with \limits (or remove) so Pandoc can parse limits like \lim_{n\to\infty}.
+    cleaned = re.sub(r'\\displaylimits', r'\\limits', cleaned)
+
+    # Rewrite \includegraphics paths from .pdf/.jpg/.jpeg to .png
+    cleaned = re.sub(
+        r'(\\includegraphics(?:\[[^\]]*\])?\{)figures/([^}]+?)(?:\.pdf|\.jpg|\.jpeg)(\})',
+        r'\1figures/\2.png\3',
+        cleaned,
+    )
 
     return cleaned
 
@@ -97,9 +141,10 @@ def _latex_to_html(text: str | None) -> str | None:
                 full_input,
                 to="html",
                 format="latex+latex_macros",
-                extra_args=["--mathml"],  # make math render without MathJax
+                extra_args=["--mathml", "--resource-path=static"],  # make math render without MathJax
             )
-            return html
+            # rewrite image paths so they point at Flask's /static/ location
+            return _rewrite_image_paths(html)
     except Exception:
         pass
 
@@ -109,17 +154,19 @@ def _latex_to_html(text: str | None) -> str | None:
             [
                 "pandoc",
                 "-f",
-                "latex+latex_macros",  # understand \\newcommand definitions
+                "latex+latex_macros",  # understand \newcommand definitions
                 "-t",
                 "html",
                 "--mathml",            # emit MathML for equations
+                "--resource-path=static",
             ],
             input=full_input,
             text=True,
             capture_output=True,
             check=True,
         )
-        return proc.stdout
+        html = proc.stdout
+        return _rewrite_image_paths(html)
     except Exception:
         # As a final fallback, return plain text inside <pre>
         print("exception in _latex_to_html, falling back to <pre>")

@@ -50,17 +50,40 @@ try:
 
     orig_problems = {}
     if 'problems' in tables:
-        cur.execute('SELECT id, problem, answer, topic FROM problems;')
-        for id_, problem, answer, topic in cur.fetchall():
-            orig_problems[id_] = {'problem': problem, 'answer': answer, 'topic': topic}
+        # Determine whether the old `problems` table had a `topic` column.
+        cur.execute("PRAGMA table_info(problems);")
+        cols = [r[1] for r in cur.fetchall()]
+        if 'topic' in cols:
+            cur.execute('SELECT id, problem, answer, topic FROM problems;')
+            for id_, problem, answer, topic in cur.fetchall():
+                orig_problems[id_] = {'problem': problem, 'answer': answer, 'topic': topic}
+        else:
+            # older schema: no `topic` column
+            cur.execute('SELECT id, problem, answer FROM problems;')
+            for id_, problem, answer in cur.fetchall():
+                orig_problems[id_] = {'problem': problem, 'answer': answer, 'topic': None}
     else:
         print('No existing `problems` table found.')
 
     orig_attempts = []
     if 'problem_attempts' in tables:
-        cur.execute('SELECT id, user_id, problem_id, topic, correct, attempted_at FROM problem_attempts;')
-        orig_attempts = cur.fetchall()
-        print(f'Found {len(orig_attempts)} existing attempts (will handle based on your choice).')
+            # Inspect existing problem_attempts schema and load rows robustly.
+            cur.execute("PRAGMA table_info(problem_attempts);")
+            pa_cols = [r[1] for r in cur.fetchall()]
+            if pa_cols:
+                cur.execute('SELECT * FROM problem_attempts;')
+                rows = cur.fetchall()
+                for row in rows:
+                    rowdict = dict(zip(pa_cols, row))
+                    aid = rowdict.get('id')
+                    user_id = rowdict.get('user_id')
+                    problem_id = rowdict.get('problem_id')
+                    # older schemas might store a topic name in `topic` or a topic id in `topic_id`
+                    old_topic = rowdict.get('topic') if 'topic' in pa_cols else rowdict.get('topic_id') if 'topic_id' in pa_cols else None
+                    correct = rowdict.get('correct')
+                    attempted_at = rowdict.get('attempted_at')
+                    orig_attempts.append((aid, user_id, problem_id, old_topic, correct, attempted_at))
+            print(f'Found {len(orig_attempts)} existing attempts (will handle based on your choice).')
     else:
         print('No existing `problem_attempts` table found.')
 
@@ -87,6 +110,7 @@ try:
     cur.execute('DROP TABLE IF EXISTS problem_attempts;')
     cur.execute('DROP TABLE IF EXISTS problems;')
     cur.execute('DROP TABLE IF EXISTS topics;')
+    cur.execute('DROP TABLE IF EXISTS problem_topics;')
 
     # Recreate topics and problems (many-to-many via problem_topics)
     cur.execute('''
@@ -210,18 +234,42 @@ try:
             # If problem_text available, find new problem id by text
             new_pid = None
             if problem_text:
-                cur.execute('SELECT id, topic_id FROM problems WHERE problem = ? LIMIT 1', (problem_text,))
+                cur.execute('SELECT id FROM problems WHERE problem = ? LIMIT 1', (problem_text,))
                 r = cur.fetchone()
                 if r:
-                    new_pid, new_tid = r
+                    new_pid = r[0]
+                    # find a topic_id for this problem from the problem_topics junction table
+                    cur.execute('SELECT topic_id FROM problem_topics WHERE problem_id = ? LIMIT 1', (new_pid,))
+                    trow = cur.fetchone()
+                    new_tid = trow[0] if trow else None
                 else:
                     new_pid = None
             # If we couldn't map by problem text, try to map by topic text (best-effort) -> insert with problem_id=0 skipped
             if new_pid is None:
                 skipped += 1
                 continue
-            # Determine topic_id: prefer problem's topic_id
+            # Determine topic_id: prefer problem's topic_id; fall back to attempting to map from old topic text/id
             topic_id = new_tid
+            if topic_id is None:
+                # Try to use old_topic_text if present (could be a topic name or id)
+                if old_topic_text:
+                    try:
+                        # if it's numeric, treat as id
+                        maybe_id = int(old_topic_text)
+                        cur.execute('SELECT id FROM topics WHERE id = ? LIMIT 1', (maybe_id,))
+                        if cur.fetchone():
+                            topic_id = maybe_id
+                    except Exception:
+                        # treat as topic name
+                        cur.execute('SELECT id FROM topics WHERE name = ? LIMIT 1', (old_topic_text,))
+                        r = cur.fetchone()
+                        if r:
+                            topic_id = r[0]
+                # final fallback: ensure 'Any' topic exists and use it
+                if topic_id is None:
+                    cur.execute('INSERT OR IGNORE INTO topics (name) VALUES (?)', ('Any',))
+                    cur.execute('SELECT id FROM topics WHERE name = ? LIMIT 1', ('Any',))
+                    topic_id = cur.fetchone()[0]
             # Insert preserving id if possible
             cur.execute('INSERT INTO problem_attempts (user_id, problem_id, topic_id, correct, attempted_at) VALUES (?,?,?,?,?)',
                         (user_id, new_pid, topic_id, correct, attempted_at))
