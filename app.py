@@ -65,7 +65,8 @@ def _clean_latex_text(text: str) -> str:
     cleaned = re.sub(r'\\textnormal\{([^}]*)\}', r'\\mathrm{\1}', cleaned)
 
     # Remove leading \noin or \noindent at the very start (plus any following whitespace)
-    cleaned = re.sub(r'^(\\noin|\\noindent)\s*', '', cleaned)
+    cleaned = re.sub(r'^\s*\\noin\b\s*', '', cleaned)
+    cleaned = re.sub(r'^\s*\\noindent\b\s*', '', cleaned)
 
     return cleaned
 

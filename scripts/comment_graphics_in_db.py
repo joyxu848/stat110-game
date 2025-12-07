@@ -49,6 +49,7 @@ cmd_patterns = [
     r"\\graphicspath",      # \graphicspath
     r"\\DeclareGraphicsExtensions", # \DeclareGraphicsExtensions
     r"\\begin\s*\{figure\}", # \begin{figure}
+    r"\\end\s*\{figure\}", # \begin{figure}
     r"\\centering",           # \centering inside figure
     r"\\caption\s*\{"       # \caption{...}
 ]
