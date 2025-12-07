@@ -15,9 +15,8 @@
             <select id="topic" name="topic" class="form-select">
                 <option value="Any" {% if selected_topic == "Any" %}selected{% endif %}>Any topic</option>
                 {% for t in topics %}
-                    <option value="{{ t.topic }}"
-                        {% if selected_topic == t.topic %}selected{% endif %}>
-                        {{ t.topic }}
+                    <option value="{{ t.name }}" {% if selected_topic == t.name %}selected{% endif %}>
+                        {{ t.name }}
                     </option>
                 {% endfor %}
             </select>
@@ -32,38 +31,31 @@
     {% if problem %}
         <div class="card mb-4">
             <div class="card-header">
-                Topic: <strong>{{ problem.topic }}</strong>
+                <strong>{% if problem.year and problem.problem %}{{ problem.year }} Problem {{ problem.problem }}{% else %}Uncategorized{% endif %}</strong>
             </div>
             <div class="card-body">
-                <p class="card-text mb-3">
-                    {{ problem.problem }}
-                </p>
+                <!-- Problem number removed (displayed in header as 'YEAR Problem N') -->
+                <div class="math-box mb-3">
+                    {% if problem.html_text %}
+                        {{ problem.html_text | safe }}
+                    {% else %}
+                        <pre>{{ problem.text }}</pre>
+                    {% endif %}
+                </div>
 
-                {% if show_answer %}
-                    <div class="alert alert-info mb-3">
-                        <strong>Answer:</strong> {{ problem.answer }}
-                    </div>
-                {% endif %}
-
-                <!-- Reveal / self-report form -->
+                <!-- Self-report form: always show right/wrong buttons (answers are not displayed) -->
                 <form method="post" action="/study" class="d-flex flex-column flex-md-row gap-2">
 
                     <input type="hidden" name="problem_id" value="{{ problem.id }}">
                     <input type="hidden" name="topic" value="{{ selected_topic }}">
 
-                    {% if not show_answer %}
-                        <button type="submit" name="action" value="reveal" class="btn btn-primary">
-                            Reveal Answer
-                        </button>
-                    {% else %}
-                        <button type="submit" name="action" value="right" class="btn btn-success">
-                            I got it right
-                        </button>
+                    <button type="submit" name="action" value="right" class="btn btn-success">
+                        I got it right
+                    </button>
 
-                        <button type="submit" name="action" value="wrong" class="btn btn-danger">
-                            I got it wrong
-                        </button>
-                    {% endif %}
+                    <button type="submit" name="action" value="wrong" class="btn btn-danger">
+                        I got it wrong
+                    </button>
 
                 </form>
             </div>

@@ -56,14 +56,16 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="small text-muted mb-1">
-                                Topic: <strong>{{ p.topic }}</strong>
+                                <strong>{% if p.year and p.problem %}{{ p.year }} Problem {{ p.problem }}{% else %}Problem{% endif %}</strong>
                             </div>
-                            <div class="mb-1">
-                                {{ p.problem }}
+                            <div class="small text-muted mb-1">
+                                Topics: <strong>{% if p.topics %}{{ p.topics | join(', ') }}{% else %}Uncategorized{% endif %}</strong>
                             </div>
-                            <div class="small text-muted">
-                                <strong>Answer:</strong> {{ p.answer }}
-                            </div>
+                            {% if p.answer %}
+                                <div class="small text-muted">
+                                    <strong>Answer:</strong> {{ p.answer }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="ms-3">
                             <a href="/study?problem_id={{ p.id }}" class="btn btn-sm btn-outline-primary">

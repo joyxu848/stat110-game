@@ -1,4 +1,7 @@
 import os
+import re
+import subprocess
+from typing import Optional
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -6,6 +9,12 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd, process_holdings
+
+# Optional: use pypandoc if available; otherwise fall back to calling pandoc binary
+try:
+    import pypandoc  # type: ignore
+except Exception:
+    pypandoc = None
 
 # Configure application
 app = Flask(__name__)
@@ -21,6 +30,106 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finance.db")
 problems_db = SQL("sqlite:///problems.db")
+
+# Path to your macros file (adjust if needed)
+MACROS_PATH = os.path.join(os.path.dirname(__file__), "static", "macros.tex")
+_LATEX_MACROS_CACHE: str | None = None
+
+def _get_latex_macros() -> str:
+    """Load LaTeX macro definitions from static/macros.tex, cached in memory."""
+    global _LATEX_MACROS_CACHE
+    if _LATEX_MACROS_CACHE is not None:
+        return _LATEX_MACROS_CACHE
+
+    try:
+        with open(MACROS_PATH, "r", encoding="utf-8") as f:
+            _LATEX_MACROS_CACHE = f.read()
+    except OSError:
+        # If the file is missing, just use an empty string so things still render.
+        _LATEX_MACROS_CACHE = ""
+    return _LATEX_MACROS_CACHE
+
+def _clean_latex_text(text: str) -> str:
+    """Return a copy of LaTeX text with leading TeX comment markers removed per-line.
+
+    This keeps the original DB content intact but ensures the HTML view shows the
+    commented-out lines (our importer may have prefixed lines with '%').
+    """
+    if text is None:
+        return text
+    
+    # Remove full-line comments
+    cleaned = re.sub(r'(?m)^[ \t]*%.*(?:\n|$)', '', text)
+
+    # Replace \textnormal{...} with \mathrm{...} so Pandoc's math parser understands it
+    cleaned = re.sub(r'\\textnormal\{([^}]*)\}', r'\\mathrm{\1}', cleaned)
+
+    # Remove leading \noin or \noindent at the very start (plus any following whitespace)
+    cleaned = re.sub(r'^(\\noin|\\noindent)\s*', '', cleaned)
+
+    return cleaned
+
+
+def _latex_to_html(text: str | None) -> str | None:
+    """Convert LaTeX snippet to HTML using pypandoc or pandoc binary.
+
+    - Prepends macros from static/macros.tex so commands like \\Pois are known.
+    - Enables the latex_macros extension in Pandoc.
+    - Uses MathML output so math renders without MathJax.
+
+    Returns None if input is None. On error, falls back to returning
+    the original text wrapped in <pre> to avoid losing content.
+    """
+    if text is None:
+        return None
+
+    cleaned = _clean_latex_text(text)
+    macros = _get_latex_macros()
+
+    # Feed macros + body into Pandoc so it sees the \\newcommand definitions
+    full_input = (macros + "\n" + cleaned) if macros else cleaned
+
+    # Try pypandoc first
+    try:
+        if pypandoc is not None:
+            html = pypandoc.convert_text(
+                full_input,
+                to="html",
+                format="latex+latex_macros",
+                extra_args=["--mathml"],  # make math render without MathJax
+            )
+            return html
+    except Exception:
+        pass
+
+    # Fall back to calling pandoc binary if available
+    try:
+        proc = subprocess.run(
+            [
+                "pandoc",
+                "-f",
+                "latex+latex_macros",  # understand \\newcommand definitions
+                "-t",
+                "html",
+                "--mathml",            # emit MathML for equations
+            ],
+            input=full_input,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        return proc.stdout
+    except Exception:
+        # As a final fallback, return plain text inside <pre>
+        print("exception in _latex_to_html, falling back to <pre>")
+        safe_text = (
+            "<pre>"
+            + cleaned.replace("&", "&amp;")
+                     .replace("<", "&lt;")
+                     .replace(">", "&gt;")
+            + "</pre>"
+        )
+        return safe_text
 
 
 @app.after_request
@@ -114,8 +223,12 @@ def register():
             return apology("Password does not match")
 
         try:
-            db.execute("INSERT INTO users (username, hash) VALUES(?,?)",
+            new_user_id = db.execute("INSERT INTO users (username, hash) VALUES(?,?)",
                        username, generate_password_hash(password))
+            
+            # Log the user in automatically
+            session["user_id"] = new_user_id
+
             return redirect("/")
         except ValueError:
             return apology("Username taken")
@@ -160,12 +273,13 @@ def account_settings():
 def study():
     user_id = session["user_id"]
 
-    # For the topic dropdown
+    # For the topic dropdown: topics table now stores available topics
     topics = problems_db.execute(
-        "SELECT DISTINCT topic FROM problems ORDER BY topic"
+        "SELECT id, name FROM topics ORDER BY name"
     )
 
     if request.method == "POST":
+
         action = request.form.get("action")          # "reveal", "right", "wrong"
         problem_id = request.form.get("problem_id")
         selected_topic = request.form.get("topic") or "Any"
@@ -173,8 +287,9 @@ def study():
         if not problem_id:
             return redirect("/study")
 
+        # Fetch the problem row
         rows = problems_db.execute(
-            "SELECT id, problem, answer, topic FROM problems WHERE id = ?",
+            "SELECT id, year, problem, text, answer FROM problems WHERE id = ?",
             problem_id,
         )
         if len(rows) != 1:
@@ -182,13 +297,24 @@ def study():
 
         problem_row = rows[0]
 
+        # Get topic names for this problem
+        problem_topic_rows = problems_db.execute(
+            "SELECT t.name FROM topics t JOIN problem_topics pt ON t.id = pt.topic_id WHERE pt.problem_id = ? ORDER BY t.name",
+            problem_row["id"],
+        )
+        problem_topics = [r["name"] for r in problem_topic_rows]
+
         if action == "reveal":
             # Show the same problem, now with the answer visible
+            # prepare cleaned fields for rendering
+            problem_row['html_text'] = _latex_to_html(problem_row.get('text'))
+            problem_row['html_answer'] = _latex_to_html(problem_row.get('answer'))
             return render_template(
                 "study.html",
                 topics=topics,
                 selected_topic=selected_topic,
                 problem=problem_row,
+                problem_topics=problem_topics,
                 show_answer=True,
                 feedback=None,
             )
@@ -196,34 +322,62 @@ def study():
         elif action in ("right", "wrong"):
             correct = 1 if action == "right" else 0
 
+            # Determine topic_id to log: prefer selected_topic if provided, else fallback to one of the problem's topics, else create/use 'Any'
+            if selected_topic != "Any":
+                tid_rows = problems_db.execute("SELECT id FROM topics WHERE name = ?", selected_topic)
+                topic_id = tid_rows[0]["id"] if tid_rows else None
+            else:
+                # try to find a topic for this problem
+                tid_rows = problems_db.execute("SELECT topic_id FROM problem_topics WHERE problem_id = ? LIMIT 1", problem_row["id"])
+                if tid_rows:
+                    topic_id = tid_rows[0]["topic_id"]
+                else:
+                    # ensure 'Any' topic exists
+                    problems_db.execute("INSERT OR IGNORE INTO topics (name) VALUES (?)", "Any")
+                    tid_rows = problems_db.execute("SELECT id FROM topics WHERE name = ?", "Any")
+                    topic_id = tid_rows[0]["id"]
+
             problems_db.execute(
-                "INSERT INTO problem_attempts (user_id, problem_id, topic, correct) "
-                "VALUES (?, ?, ?, ?)",
+                "INSERT INTO problem_attempts (user_id, problem_id, topic_id, correct) VALUES (?, ?, ?, ?)",
                 user_id,
                 problem_row["id"],
-                problem_row["topic"],
+                topic_id,
                 correct,
             )
 
             # After logging, get a new random problem (same topic filter)
             if selected_topic == "Any":
                 probs = problems_db.execute(
-                    "SELECT id, problem, answer, topic FROM problems ORDER BY RANDOM() LIMIT 1"
+                    "SELECT id, year, problem, text, answer FROM problems ORDER BY RANDOM() LIMIT 1"
                 )
             else:
                 probs = problems_db.execute(
-                    "SELECT id, problem, answer, topic FROM problems "
-                    "WHERE topic = ? ORDER BY RANDOM() LIMIT 1",
+                    "SELECT p.id, p.year, p.problem, p.text, p.answer FROM problems p "
+                    "JOIN problem_topics pt ON p.id = pt.problem_id "
+                    "JOIN topics t ON pt.topic_id = t.id "
+                    "WHERE t.name = ? ORDER BY RANDOM() LIMIT 1",
                     selected_topic,
                 )
 
             new_problem = probs[0] if probs else None
+
+            new_problem_topics = []
+            if new_problem:
+                pt_rows = problems_db.execute(
+                    "SELECT t.name FROM topics t JOIN problem_topics pt ON t.id = pt.topic_id WHERE pt.problem_id = ? ORDER BY t.name",
+                    new_problem["id"],
+                )
+                new_problem_topics = [r["name"] for r in pt_rows]
+            if new_problem:
+                new_problem['html_text'] = _latex_to_html(new_problem.get('text'))
+                new_problem['html_answer'] = _latex_to_html(new_problem.get('answer'))
 
             return render_template(
                 "study.html",
                 topics=topics,
                 selected_topic=selected_topic,
                 problem=new_problem,
+                problem_topics=new_problem_topics,
                 show_answer=False,
                 feedback="Nice, logged! Here's a new problem." if new_problem else "No more problems found for this topic.",
             )
@@ -239,31 +393,51 @@ def study():
 
     if problem_id:
         rows = problems_db.execute(
-            "SELECT id, problem, answer, topic FROM problems WHERE id = ?",
+            "SELECT id, year, problem, text, answer FROM problems WHERE id = ?",
             problem_id,
         )
         if rows:
             problem_row = rows[0]
-            # Ensure dropdown matches this problem’s topic
-            selected_topic = problem_row["topic"]
+            # Ensure dropdown matches this problem’s first topic if available
+            pt_rows = problems_db.execute(
+                "SELECT t.name FROM topics t JOIN problem_topics pt ON t.id = pt.topic_id WHERE pt.problem_id = ? ORDER BY t.name LIMIT 1",
+                problem_row["id"],
+            )
+            if pt_rows:
+                selected_topic = pt_rows[0]["name"]
     else:
         if selected_topic == "Any":
             probs = problems_db.execute(
-                "SELECT id, problem, answer, topic FROM problems ORDER BY RANDOM() LIMIT 1"
+                "SELECT id, year, problem, text, answer FROM problems ORDER BY RANDOM() LIMIT 1"
             )
         else:
             probs = problems_db.execute(
-                "SELECT id, problem, answer, topic FROM problems "
-                "WHERE topic = ? ORDER BY RANDOM() LIMIT 1",
+                "SELECT p.id, p.year, p.problem, p.text, p.answer FROM problems p "
+                "JOIN problem_topics pt ON p.id = pt.problem_id "
+                "JOIN topics t ON pt.topic_id = t.id "
+                "WHERE t.name = ? ORDER BY RANDOM() LIMIT 1",
                 selected_topic,
             )
         problem_row = probs[0] if probs else None
+
+    # If we have a problem, fetch its topic names
+    problem_topics = []
+    if problem_row:
+        pt_rows = problems_db.execute(
+            "SELECT t.name FROM topics t JOIN problem_topics pt ON t.id = pt.topic_id WHERE pt.problem_id = ? ORDER BY t.name",
+            problem_row["id"],
+        )
+        problem_topics = [r["name"] for r in pt_rows]
+    if problem_row:
+        problem_row['html_text'] = _latex_to_html(problem_row.get('text'))
+        problem_row['html_answer'] = _latex_to_html(problem_row.get('answer'))
 
     return render_template(
         "study.html",
         topics=topics,
         selected_topic=selected_topic,
         problem=problem_row,
+        problem_topics=problem_topics,
         show_answer=False,
         feedback=None,
     )
@@ -277,14 +451,15 @@ def progress():
     stats = problems_db.execute(
         """
         SELECT
-            topic,
-            SUM(CASE WHEN correct = 1 THEN 1 ELSE 0 END) AS correct_count,
-            SUM(CASE WHEN correct = 0 THEN 1 ELSE 0 END) AS wrong_count,
+            t.name AS topic,
+            SUM(CASE WHEN a.correct = 1 THEN 1 ELSE 0 END) AS correct_count,
+            SUM(CASE WHEN a.correct = 0 THEN 1 ELSE 0 END) AS wrong_count,
             COUNT(*) AS total
-        FROM problem_attempts
-        WHERE user_id = ?
-        GROUP BY topic
-        ORDER BY topic;
+        FROM problem_attempts a
+        JOIN topics t ON a.topic_id = t.id
+        WHERE a.user_id = ?
+        GROUP BY t.name
+        ORDER BY t.name;
         """,
         user_id,
     )
@@ -294,9 +469,9 @@ def progress():
         """
         SELECT
             p.id,
+            p.year,
             p.problem,
             p.answer,
-            p.topic,
             MAX(a.attempted_at) AS last_attempt
         FROM problem_attempts a
         JOIN problems p ON a.problem_id = p.id
@@ -307,6 +482,14 @@ def progress():
         """,
         user_id,
     )
+
+    # For each wrong problem, fetch all topic names it is linked to so the UI can show them
+    for p in wrong_problems:
+        pt_rows = problems_db.execute(
+            "SELECT t.name FROM topics t JOIN problem_topics pt ON t.id = pt.topic_id WHERE pt.problem_id = ? ORDER BY t.name",
+            p["id"],
+        )
+        p["topics"] = [r["name"] for r in pt_rows]
 
     return render_template("progress.html", stats=stats, wrong_problems=wrong_problems)
 
