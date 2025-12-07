@@ -28,7 +28,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
+db = SQL("sqlite:///users.db")
 problems_db = SQL("sqlite:///problems.db")
 
 # Path to your macros file (adjust if needed)
@@ -314,7 +314,10 @@ def account_settings():
         return redirect("/")
 
     else:
-        return render_template("account_settings.html")
+        # Show the account settings form with current username
+        user_row = db.execute("SELECT username FROM users WHERE id = ?", user_id)
+        username = user_row[0]["username"] if user_row else ""
+        return render_template("account_settings.html", username=username)
 
 @app.route("/study", methods=["GET", "POST"])
 @login_required
