@@ -204,7 +204,7 @@ def blotchville():
         FROM leaderboard
         JOIN users ON users.id = leaderboard.user_id
         ORDER BY score DESC
-        LIMIT 10
+        LIMIT 5
     """)
     # Ensure your template is named blotchville.html
     return render_template("blotchville.html", leaders=leaders)
@@ -616,3 +616,70 @@ def monty_save():
                session["user_id"], switched, won)
     
     return jsonify({"success": True})
+
+@app.route("/wandering_professor")
+@login_required
+def wandering_professor():
+    """Play the Random Walk Game"""
+    return render_template("wandering_professor.html")
+
+@app.route("/cafe_poll", methods=["GET", "POST"])
+@login_required
+def cafe_poll():
+    # The official list of cafes
+    cafes = [
+        "Blank Street", "LA Burdick", "Peet's Coffee", "Simon's Coffee", 
+        "Pavement", "JP Licks", "Tatte", "Starbucks", "Flour", 
+        "Cafe Gato Rojo", "Blue Bottle", "Faro Cafe",
+        "Kung Fu Tea", "Ten One Tea House", "Gong Cha", "Other"
+    ]
+    
+    categories = {
+        "hot_chocolate": "🍫 Hot Chocolate",
+        "coffee": "☕ Coffee",
+        "tea": "🍵 Tea"
+    }
+
+    if request.method == "POST":
+        for cat_slug in categories.keys():
+            choice = request.form.get(cat_slug)
+            if choice and choice in cafes:
+                db.execute("""
+                    INSERT OR REPLACE INTO cafe_votes (user_id, category, cafe) 
+                    VALUES (?, ?, ?)
+                """, session["user_id"], cat_slug, choice)
+    
+        return redirect("/cafe_poll")
+
+    # --- GET: Calculate Results ---
+    
+    # 1. Get GLOBAL results for the progress bars
+    results = {slug: {cafe: 0 for cafe in cafes} for slug in categories.keys()}
+    totals = {slug: 0 for slug in categories.keys()}
+
+    rows = db.execute("SELECT category, cafe, COUNT(*) as count FROM cafe_votes GROUP BY category, cafe")
+    for row in rows:
+        cat = row["category"]
+        cafe = row["cafe"]
+        count = row["count"]
+        if cat in results and cafe in results[cat]:
+            results[cat][cafe] = count
+            totals[cat] += count
+
+    final_data = []
+    for slug, label in categories.items():
+        cafe_list = []
+        total_votes = totals[slug]
+        for cafe, count in results[slug].items():
+            if count > 0: 
+                pct = (count / total_votes * 100) if total_votes > 0 else 0
+                cafe_list.append({"name": cafe, "pct": pct})
+        cafe_list.sort(key=lambda x: x["pct"], reverse=True)
+        final_data.append({"label": label, "slug": slug, "cafes": cafe_list})
+
+    # 2. Get CURRENT USER'S votes to display specifically to them
+    user_votes_rows = db.execute("SELECT category, cafe FROM cafe_votes WHERE user_id = ?", session["user_id"])
+    # Convert list of rows to a dictionary: {'coffee': 'Tatte', 'tea': 'Gong Cha'}
+    user_votes = {row["category"]: row["cafe"] for row in user_votes_rows}
+
+    return render_template("cafe_votes.html", cafes=cafes, poll_results=final_data, user_votes=user_votes)

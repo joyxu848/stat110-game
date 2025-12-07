@@ -6,37 +6,57 @@
 
 {% block main %}
 <div class="container py-5">
-    <h2 class="mb-4" style="color:#2c3e50;">Choose Your Study Break Game</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-5 mb-4">
-            <div class="card h-100 shadow-sm text-center" style="background:#2c3e50; color:#f1c40f; border:3px solid #f1c40f;">
-                <div class="card-body">
-                    <h4 class="card-title">Blotchville</h4>
-                    <p class="card-text">Dodge cars and rack up your score in the Blotchville bus game!</p>
-                    <a href="/blotchville" class="btn btn-warning fw-bold">Play Blotchville</a>
+    
+    <div class="row justify-content-center g-4">
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="border-top: 5px solid #2c3e50 !important;">
+                <div class="card-body p-5 d-flex flex-column">
+                    <h2 class="card-title fw-bold" style="color: #2c3e50;">Blotchville</h2>
+                    <p class="card-text mb-4" style="color: #2E7DD9;">Dodge cars and rack up your score as a Blotchville bus driver!</p>
+                    <a href="/blotchville" class="btn btn-lg w-100 fw-bold mt-auto" style="background-color: #2c3e50; color: #f39c12;">
+                        Play Blotchville
+                    </a>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-5 mb-4">
-            <div class="card h-100 shadow-sm text-center" style="background:#fdfbf7; color:#2c3e50; border:3px solid #e74c3c;">
-                <div class="card-body">
-                    <h4 class="card-title">Prue & Frida</h4>
-                    <p class="card-text">Help Prue and Frida fix words in the open book typing game!</p>
-                    <a href="/prue_frida" class="btn btn-danger fw-bold">Play Prue & Frida</a>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="border-top: 5px solid #c780c9 !important;">
+                <div class="card-body p-5 d-flex flex-column">
+                    <h2 class="card-title fw-bold" style="color: #c780c9;">Prue & Frida</h2>
+                    <p class="card-text mb-4" style="color: #2E7DD9;">Help Prue and Frida catch typos before the paper goes to print!</p>
+                    <a href="/prue_frida" class="btn btn-lg w-100 fw-bold mt-auto" style="background-color: #c780c9; color: #54372d;">
+                        Play Prue & Frida
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-5 mb-4">
-            <div class="card h-100 shadow-sm text-center" style="background:#f9ed69; color:#2c3e50; border:3px solid #f08a5d;">
-                <div class="card-body">
-                    <h4 class="card-title">Monty Hall</h4>
-                    <p class="card-text">The classic probability trap. Will you switch or stay? Check your personal stats!</p>
-                    <a href="/monty_hall" class="btn btn-dark fw-bold">Play Monty Hall</a>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="border-top: 5px solid #f39c12 !important;">
+                <div class="card-body p-5 d-flex flex-column">
+                    <h2 class="card-title fw-bold" style="color: #f39c12;">Monty Hall</h2>
+                    <p class="card-text mb-4" style="color: #2E7DD9;">The classic probability trap. Check your intuition!</p>
+                    <a href="/monty_hall" class="btn btn-lg w-100 fw-bold mt-auto" style="background-color: #f39c12; color: #2c3e50;">
+                        Play Monty Hall
+                    </a>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="border-top: 5px solid #54372d !important;">
+                <div class="card-body p-5 d-flex flex-column">
+                    <h2 class="card-title fw-bold" style="color: #54372d;">Coffee, Tea and Hot Chocolate</h2>
+                    <p class="card-text mb-4" style="color: #2E7DD9;">Settle the debate: Where is the best hot drink in Cambridge?</p>
+                    <a href="/cafe_poll" class="btn btn-lg w-100 fw-bold mt-auto" style="background-color: #54372d; color: #c780c9;">
+                        Vote Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-
 {% endblock %}

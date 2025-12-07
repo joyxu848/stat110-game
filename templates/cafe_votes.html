@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Cafe Poll
+{% endblock %}
+
+{% block main %}
+<div class="container py-4">
+    
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0" style="background: #fdfbf7;">
+                <div class="card-body p-4">
+                    
+                    {% if user_votes %}
+                    <div id="vote-summary">
+                        <h4 class="mb-4 fw-bold text-uppercase" style="color: #2E7DD9;">Your Picks</h4>
+                        <div class="mb-4">
+                            <div class="small fw-bold text-muted text-uppercase mb-1">🍫 Hot Chocolate</div>
+                            <div class="fs-5" style="color: #2c3e50;">{{ user_votes.get('hot_chocolate', 'Not voted') }}</div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="small fw-bold text-muted text-uppercase mb-1">☕ Coffee</div>
+                            <div class="fs-5" style="color: #2c3e50;">{{ user_votes.get('coffee', 'Not voted') }}</div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="small fw-bold text-muted text-uppercase mb-1">🍵 Tea</div>
+                            <div class="fs-5" style="color: #2c3e50;">{{ user_votes.get('tea', 'Not voted') }}</div>
+                        </div>
+                        
+                        <button onclick="toggleEditMode()" class="btn btn-outline-primary w-100 fw-bold">
+                            Change Your Mind
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    <form action="/cafe_poll" method="post" id="vote-form" 
+                          style="{% if user_votes %}display:none;{% endif %}">
+                        
+                        <h4 class="mb-4 fw-bold text-uppercase" style="color: #2E7DD9;">Cast Your Vote</h4>
+
+                        <div class="mb-3 text-start">
+                            <label class="form-label fw-bold" style="color: #d35400;">🍫 Best Hot Chocolate</label>
+                            <select class="form-select" name="hot_chocolate">
+                                <option disabled {% if not user_votes.hot_chocolate %}selected{% endif %}>Choose a place...</option>
+                                {% for cafe in cafes %}
+                                    <option value="{{ cafe }}" {% if user_votes.hot_chocolate == cafe %}selected{% endif %}>{{ cafe }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label class="form-label fw-bold" style="color: #5d4037;">☕ Best Coffee</label>
+                            <select class="form-select" name="coffee">
+                                <option disabled {% if not user_votes.coffee %}selected{% endif %}>Choose a place...</option>
+                                {% for cafe in cafes %}
+                                    <option value="{{ cafe }}" {% if user_votes.coffee == cafe %}selected{% endif %}>{{ cafe }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-4 text-start">
+                            <label class="form-label fw-bold" style="color: #2e7d32;">🍵 Best Tea</label>
+                            <select class="form-select" name="tea">
+                                <option disabled {% if not user_votes.tea %}selected{% endif %}>Choose a place...</option>
+                                {% for cafe in cafes %}
+                                    <option value="{{ cafe }}" {% if user_votes.tea == cafe %}selected{% endif %}>{{ cafe }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Submit Votes</button>
+                        
+                        {% if user_votes %}
+                        <div class="text-center mt-3">
+                            <a href="#" onclick="toggleEditMode(); return false;" class="small text-muted">Cancel</a>
+                        </div>
+                        {% endif %}
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row">
+                {% for category in poll_results %}
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white border-bottom fw-bold text-start fs-5">
+                            {{ category.label }}
+                        </div>
+                        <div class="card-body">
+                            {% if category.cafes|length == 0 %}
+                                <p class="text-muted fst-italic">No votes yet. Be the first!</p>
+                            {% else %}
+                                {% for item in category.cafes %}
+                                <div class="d-flex align-items-center mb-2">
+                                    
+                                    <div class="small fw-bold text-end me-3" style="width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        {{ item.name }}
+                                    </div>
+                                    
+                                    <div class="progress flex-grow-1" style="height: 20px;">
+                                        {% if 'Chocolate' in category.label %}
+                                            <div class="progress-bar" role="progressbar" style="width: {{ item.pct }}%; background-color: #d35400;"></div>
+                                        {% elif 'Coffee' in category.label %}
+                                            <div class="progress-bar" role="progressbar" style="width: {{ item.pct }}%; background-color: #6d4c41;"></div>
+                                        {% else %}
+                                            <div class="progress-bar" role="progressbar" style="width: {{ item.pct }}%; background-color: #43a047;"></div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="small fw-bold ms-3 text-muted" style="width: 40px;">
+                                        {{ item.pct|round|int }}%
+                                    </div>
+
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleEditMode() {
+        const summary = document.getElementById('vote-summary');
+        const form = document.getElementById('vote-form');
+        
+        if (summary.style.display === 'none') {
+            summary.style.display = 'block';
+            form.style.display = 'none';
+        } else {
+            summary.style.display = 'none';
+            form.style.display = 'block';
+        }
+    }
+</script>
+{% endblock %}
