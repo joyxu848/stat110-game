@@ -1,10 +1,8 @@
 {% extends "layout.html" %}
 
-
 {% block title %}
    Blotchville
 {% endblock %}
-
 
 {% block main %}
 <div class="container-fluid py-4">
@@ -13,7 +11,6 @@
        <div class="col-lg-8 mb-4">
            <div class="study-break-wrapper d-flex justify-content-center">
                <div class="study-break-content d-flex flex-column align-items-center justify-content-center">
-
 
                    <div class="overhead-structure">
                        <div class="overhead-pole"></div>
@@ -33,34 +30,31 @@
                        </div>
                    </div>
 
-
                    <div class="mb-2">
                        <span class="fw-bold">Score:</span>
                        <span id="score">0</span>
                    </div>
 
-
                    <button id="startButton" class="btn btn-primary mb-3">
                        Start Game
                    </button>
 
-
                    <canvas id="gameCanvas" width="600" height="400" class="study-game-canvas"></canvas>
-
 
                    <p id="status" class="mt-3 fw-bold"></p>
                </div>
            </div>
        </div>
 
-
        <div class="col-lg-4">
-           <div class="leaderboard-sign street-sign d-flex flex-column align-items-center" style="position:relative; left:auto; top:auto; transform:none; margin-top:40px;">
+           <div class="street-sign leaderboard-container d-flex flex-column align-items-center">
+               
                <img src="/static/stat110-logo.png" alt="Stat 110" class="stat110-logo" style="height:48px; margin-bottom:8px;">
-               <span style="color:#f1c40f; font-size:1.3rem; font-weight:bold;">Leaderboard</span>
-               <table class="table table-bordered table-sm mt-2 mb-0 text-center" style="background:#2c3e50; color:#f1c40f; border-radius:10px; overflow:hidden;">
+               <span class="fs-4 fw-bold text-blotch-yellow">Leaderboard</span>
+               
+               <table class="table table-bordered table-sm table-blotchville text-center mb-0">
                    <thead>
-                       <tr style="background:#2c3e50; color:#f1c40f;">
+                       <tr>
                            <th>Rank</th>
                            <th>User</th>
                            <th>Score</th>
@@ -80,14 +74,13 @@
                        {% endfor %}
                    </tbody>
                </table>
-               <div class="small mt-2" style="color:#f1c40f;">Refresh page to see new scores</div>
+               
+               <div class="small mt-2 text-blotch-yellow">Refresh page to see new scores</div>
            </div>
        </div>
 
-
    </div>
 </div>
-
 
 <script>
    (function () {
@@ -97,7 +90,6 @@
        const statusEl = document.getElementById("status");
        const startButton = document.getElementById("startButton");
 
-
        const laneCount = 3;
        const laneHeight = canvas.height / laneCount;
        const laneCenters = [];
@@ -105,9 +97,7 @@
            laneCenters.push(i * laneHeight + laneHeight / 2);
        }
 
-
        const bus = { lane: 1, x: 40, width: 90, height: 60 };
-
 
        let cars = [];
        let running = false;
@@ -117,9 +107,7 @@
        let lastSpawnTime = 0;
        let spawnInterval = 900;
        let score = 0;
-       // Flag to prevent double submission if user mashes keys
        let scoreSubmitted = false;
-
 
        function resetGame() {
            bus.lane = 1;
@@ -130,11 +118,10 @@
            lastFrameTime = 0;
            lastSpawnTime = 0;
            score = 0;
-           scoreSubmitted = false; // Reset flag
+           scoreSubmitted = false;
            scoreEl.textContent = "0";
            statusEl.textContent = "";
        }
-
 
        function wouldCreateWall(candidateLane, candidateX) {
            const windowStart = 180;
@@ -154,7 +141,6 @@
            }
            return lanesBlocked.size === laneCount;
        }
-
 
        function spawnCar() {
            const speed = 220 + Math.random() * 100;
@@ -177,7 +163,6 @@
            });
        }
 
-
        function update(dt, timestamp) {
            if (crashing) {
                if (timestamp > shakeEndTime) {
@@ -186,14 +171,11 @@
                return;
            }
 
-
            for (let car of cars) {
                car.x -= car.speed * dt;
            }
 
-
            cars = cars.filter(car => car.x > -150);
-
 
            for (let car of cars) {
                if (car.lane === bus.lane) {
@@ -208,11 +190,9 @@
                }
            }
 
-
            score += dt * 10;
            scoreEl.textContent = Math.floor(score);
        }
-
 
        function drawRoad() {
            ctx.fillStyle = "#333";
@@ -231,53 +211,35 @@
            ctx.setLineDash([]);
        }
 
-
        function drawBus() {
            const y = laneCenters[bus.lane] - bus.height / 2;
-           // Bus body
            ctx.fillStyle = "#4da6ff";
            ctx.fillRect(bus.x, y, bus.width, bus.height);
-           // Bus window
            ctx.fillStyle = "#e6f2ff";
            ctx.fillRect(bus.x + 10, y + 10, bus.width - 20, 15);
-           // Wheels (circular, similar to cars)
            ctx.fillStyle = "#222";
            ctx.beginPath();
-           ctx.arc(bus.x + 22, y + bus.height - 6, 10, 0, 2 * Math.PI); // rear wheel
-           ctx.arc(bus.x + bus.width - 22, y + bus.height - 6, 10, 0, 2 * Math.PI); // front wheel
+           ctx.arc(bus.x + 22, y + bus.height - 6, 10, 0, 2 * Math.PI);
+           ctx.arc(bus.x + bus.width - 22, y + bus.height - 6, 10, 0, 2 * Math.PI);
            ctx.fill();
        }
-
 
        function drawCars() {
            for (let car of cars) {
                const y = laneCenters[car.lane] - car.height / 2;
-               // Car body: red box
                ctx.fillStyle = "#ED7014";
                ctx.fillRect(car.x, y + 16, car.width, car.height - 16);
-
-
-               // Windshield: bluish white rectangle on left
                ctx.fillStyle = "#e0f7fa";
                ctx.fillRect(car.x + 4, y + 24, 18, 18);
-
-
-               // Wheels (side profile: two wheels)
                ctx.fillStyle = "#222";
                ctx.beginPath();
-               ctx.arc(car.x + 22, y + car.height - 6, 10, 0, 2 * Math.PI); // rear wheel
-               ctx.arc(car.x + car.width - 22, y + car.height - 6, 10, 0, 2 * Math.PI); // front wheel
+               ctx.arc(car.x + 22, y + car.height - 6, 10, 0, 2 * Math.PI);
+               ctx.arc(car.x + car.width - 22, y + car.height - 6, 10, 0, 2 * Math.PI);
                ctx.fill();
-
-
-
-
-               // Taillight: red on right
                ctx.fillStyle = "#ff3333";
                ctx.fillRect(car.x + car.width - 8, y + car.height - 28, 6, 10);
            }
        }
-
 
        function draw() {
            ctx.save();
@@ -292,52 +254,33 @@
            ctx.restore();
        }
 
-
        function triggerCrash(timestamp) {
            crashing = true;
            shakeEndTime = timestamp + 500;
            statusEl.textContent = "CRASH!!!";
        }
 
-
        function sendScore(finalScore) {
            if (scoreSubmitted) return;
            scoreSubmitted = true;
-
-
            fetch('/submit_score', {
                method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json'
-               },
+               headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({ score: Math.floor(finalScore) })
            })
            .then(response => response.json())
-           .then(data => {
-               console.log('Score saved:', data);
-           })
-           .catch(error => {
-               console.error('Error saving score:', error);
-           });
+           .then(data => { console.log('Score saved:', data); })
+           .catch(error => { console.error('Error saving score:', error); });
        }
-
 
        function showGameOverScreen() {
            running = false;
            crashing = false;
-          
-           // --- NEW: SEND SCORE TO SERVER ---
            sendScore(score);
-
-
            statusEl.textContent = "Crash! Press Play Again to retry.";
            startButton.textContent = "Play Again";
-
-
            ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-
            ctx.fillStyle = "#fff";
            ctx.font = "24px system-ui, sans-serif";
            ctx.textAlign = "center";
@@ -345,13 +288,11 @@
            ctx.fillText("Score: " + Math.floor(score), canvas.width / 2, canvas.height / 2 + 24);
        }
 
-
        function gameLoop(timestamp) {
            if (!running) return;
            if (!lastFrameTime) lastFrameTime = timestamp;
            const dt = (timestamp - lastFrameTime) / 1000;
            lastFrameTime = timestamp;
-
 
            if (!crashing) {
                if (!lastSpawnTime) lastSpawnTime = timestamp;
@@ -366,7 +307,6 @@
            requestAnimationFrame(gameLoop);
        }
 
-
        document.addEventListener("keydown", function (event) {
            if (!running || crashing) return;
            if (event.key === "ArrowUp" && bus.lane > 0) {
@@ -378,9 +318,7 @@
            }
        });
 
-
        startButton.addEventListener("click", function () {
-           // If the game was previously over, reload the page to update leaderboard
            if (scoreSubmitted) {
                window.location.reload();
            } else {
@@ -391,10 +329,8 @@
            }
        });
 
-
        drawRoad();
        drawBus();
    })();
 </script>
 {% endblock %}
-
