@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Choose a Game
+{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+    <h2 class="mb-4" style="color:#2c3e50;">Choose Your Study Break Game</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-5 mb-4">
+            <div class="card h-100 shadow-sm text-center" style="background:#2c3e50; color:#f1c40f; border:3px solid #f1c40f;">
+                <div class="card-body">
+                    <h4 class="card-title">Blotchville</h4>
+                    <p class="card-text">Dodge cars and rack up your score in the Blotchville bus game!</p>
+                    <a href="/blotchville" class="btn btn-warning fw-bold">Play Blotchville</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-5 mb-4">
+            <div class="card h-100 shadow-sm text-center" style="background:#fdfbf7; color:#2c3e50; border:3px solid #e74c3c;">
+                <div class="card-body">
+                    <h4 class="card-title">Prue & Frida</h4>
+                    <p class="card-text">Help Prue and Frida fix words in the open book typing game!</p>
+                    <a href="/prue_frida" class="btn btn-danger fw-bold">Play Prue & Frida</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 mb-4">
+            <div class="card h-100 shadow-sm text-center" style="background:#f9ed69; color:#2c3e50; border:3px solid #f08a5d;">
+                <div class="card-body">
+                    <h4 class="card-title">Monty Hall</h4>
+                    <p class="card-text">The classic probability trap. Will you switch or stay? Check your personal stats!</p>
+                    <a href="/monty_hall" class="btn btn-dark fw-bold">Play Monty Hall</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

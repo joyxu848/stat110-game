@@ -4,7 +4,7 @@ import subprocess
 from typing import Optional
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -191,8 +191,24 @@ def after_request(response):
 
 @app.route("/break")
 @login_required
-def study_break():
-    return render_template("break.html")
+def game_menu():
+    """Show the menu to choose a game"""
+    return render_template("game_select.html")
+
+@app.route("/blotchville")
+@login_required
+def blotchville():
+    """Play the Bus Game"""
+    leaders = db.execute("""
+        SELECT users.username, leaderboard.score, leaderboard.timestamp
+        FROM leaderboard
+        JOIN users ON users.id = leaderboard.user_id
+        ORDER BY score DESC
+        LIMIT 10
+    """)
+    # Ensure your template is named blotchville.html
+    return render_template("blotchville.html", leaders=leaders)
+
 
 @app.route("/")
 def index():
@@ -544,4 +560,59 @@ def progress():
 
     return render_template("progress.html", stats=stats, wrong_problems=wrong_problems)
 
+@app.route("/prue_frida")
+@login_required
+def prue_frida():
+   return render_template("prue_frida.html")
 
+@app.route("/submit_score", methods=["POST"])
+@login_required
+def submit_score():
+    data = request.get_json()
+    score = data.get("score")
+    
+    if score is not None:
+        # Save score to users.db
+        db.execute("INSERT INTO leaderboard (user_id, score) VALUES (?, ?)", 
+                   session["user_id"], score)
+        return jsonify({"success": True})
+    
+    return jsonify({"success": False}), 400
+
+
+@app.route("/monty_hall")
+@login_required
+def monty_hall():
+    """Play the Monty Hall Game"""
+    user_id = session["user_id"]
+
+    # Calculate stats for the user
+    # 1. Stats for SWITCHING
+    switch_attempts = db.execute("SELECT COUNT(*) as n FROM monty_stats WHERE user_id = ? AND switched = 1", user_id)[0]["n"]
+    switch_wins = db.execute("SELECT COUNT(*) as n FROM monty_stats WHERE user_id = ? AND switched = 1 AND won = 1", user_id)[0]["n"]
+    
+    # 2. Stats for STAYING
+    stay_attempts = db.execute("SELECT COUNT(*) as n FROM monty_stats WHERE user_id = ? AND switched = 0", user_id)[0]["n"]
+    stay_wins = db.execute("SELECT COUNT(*) as n FROM monty_stats WHERE user_id = ? AND switched = 0 AND won = 1", user_id)[0]["n"]
+
+    stats = {
+        "switch_attempts": switch_attempts,
+        "switch_wins": switch_wins,
+        "stay_attempts": stay_attempts,
+        "stay_wins": stay_wins
+    }
+
+    return render_template("monty_hall.html", stats=stats)
+
+@app.route("/monty_save", methods=["POST"])
+@login_required
+def monty_save():
+    """Save the result of a Monty Hall game"""
+    data = request.get_json()
+    switched = 1 if data.get("switched") else 0
+    won = 1 if data.get("won") else 0
+    
+    db.execute("INSERT INTO monty_stats (user_id, switched, won) VALUES (?, ?, ?)",
+               session["user_id"], switched, won)
+    
+    return jsonify({"success": True})

@@ -1,0 +1,416 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Monty Hall
+{% endblock %}
+
+{% block main %}
+<style>
+    /* --- 1970s GAME SHOW STAGE --- */
+    
+    .stage-container {
+        /* Funky 70s Gradient Background */
+        background: radial-gradient(circle, #b83b5e 0%, #6a2c70 100%);
+        min-height: 85vh;
+        position: relative;
+        overflow: hidden;
+        border: 5px solid #f08a5d;
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        color: white;
+        font-family: 'Arial Black', sans-serif;
+    }
+
+    /* Velvet Curtains (CSS decoration) */
+    .curtain {
+        position: absolute;
+        top: 0; bottom: 0;
+        width: 15%;
+        background: repeating-linear-gradient(
+            90deg,
+            #900c3f,
+            #900c3f 20px,
+            #581845 30px,
+            #581845 40px
+        );
+        z-index: 10;
+        box-shadow: 10px 0 20px rgba(0,0,0,0.5);
+    }
+    .curtain.left { left: 0; }
+    .curtain.right { right: 0; transform: scaleX(-1); }
+
+    /* The Host Message Board */
+    .message-board {
+        background: #f9ed69;
+        color: #222;
+        padding: 15px 40px;
+        border-radius: 50px;
+        border: 4px solid #f08a5d;
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        z-index: 20;
+        min-width: 500px;
+        transition: transform 0.2s;
+    }
+
+    /* The Doors Container */
+    .doors-wrapper {
+        display: flex;
+        gap: 20px;
+        z-index: 20;
+        margin-bottom: 40px;
+    }
+
+    /* Individual Door */
+    .door-container {
+        width: 160px;
+        height: 240px;
+        position: relative;
+        perspective: 1000px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    /* Hover effect to encourage clicking */
+    .door-container:hover {
+        transform: scale(1.05);
+    }
+
+    .door {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.4, 2, 0.5, 1); /* Bouncy open effect */
+    }
+
+    .door.open {
+        transform: rotateY(-100deg); /* Swing open */
+    }
+
+    /* Front of Door (Closed) */
+    .door-face {
+        position: absolute;
+        width: 100%; height: 100%;
+        backface-visibility: hidden;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 4rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .door-front {
+        background: linear-gradient(135deg, #f08a5d 0%, #d65a31 100%); /* Retro Orange */
+        border: 4px solid #f9ed69; /* Yellow border */
+        color: #f9ed69;
+    }
+    
+    .door-front::after {
+        content: ''; /* Door Knob */
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        width: 15px; height: 15px;
+        background: gold;
+        border-radius: 50%;
+        box-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    /* Selected state */
+    .door-container.selected .door-front {
+        border-color: #fff;
+        box-shadow: 0 0 20px #fff;
+    }
+
+    /* Behind the door (Prize) */
+    .door-back {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #333;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 5rem;
+        transform: translateZ(-1px); 
+    }
+
+    /* Stats Board */
+    .stats-board {
+        background: #222;
+        border: 4px solid #888;
+        padding: 20px;
+        border-radius: 10px;
+        color: #0f0; /* Green retro terminal text */
+        font-family: 'Courier New', monospace;
+        z-index: 20;
+        display: flex;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .stat-box h4 {
+        color: #aaa;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+</style>
+
+<div class="stage-container">
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+
+    <div style="font-family: 'Times New Roman'; font-style: italic; color: #f9ed69; opacity: 0.8; margin-bottom: 10px; font-size: 3rem;">
+        The Monty Hall Problem
+    </div>
+
+    <div id="hostMessage" class="message-board">
+        Choose a Door!
+    </div>
+
+    <div class="doors-wrapper">
+        <div class="door-container" id="door1" onclick="handleDoorClick(0)">
+            <div class="door-back" id="prize0">❓</div> 
+            <div class="door" id="doorInner0">
+                <div class="door-face door-front">1</div>
+            </div>
+        </div>
+        <div class="door-container" id="door2" onclick="handleDoorClick(1)">
+            <div class="door-back" id="prize1">❓</div>
+            <div class="door" id="doorInner1">
+                <div class="door-face door-front">2</div>
+            </div>
+        </div>
+        <div class="door-container" id="door3" onclick="handleDoorClick(2)">
+            <div class="door-back" id="prize2">❓</div>
+            <div class="door" id="doorInner2">
+                <div class="door-face door-front">3</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-board">
+        <div class="stat-box">
+            <h4>Win % When Switching</h4>
+            <div class="stat-number" id="switchStat">
+                --%
+            </div>
+            <small class="text-muted" id="switchCount">0/0</small>
+        </div>
+        <div class="stat-box">
+            <h4>Win % When Staying</h4>
+            <div class="stat-number" id="stayStat">
+                --%
+            </div>
+            <small class="text-muted" id="stayCount">0/0</small>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- SERVER STATS ---
+    let stats = {
+        switchWins: {{ stats.switch_wins }},
+        switchTotal: {{ stats.switch_attempts }},
+        stayWins: {{ stats.stay_wins }},
+        stayTotal: {{ stats.stay_attempts }}
+    };
+
+    // --- GAME STATE ---
+    // State 0: Pick first door
+    // State 1: Monty reveals goat (Animation)
+    // State 2: Final Decision (User clicks a door)
+    // State 3: Result (Pausing before reset)
+    let gameState = 0;
+    
+    let carLocation = 0; 
+    let userInitialPick = -1;
+    let montyOpenedDoor = -1;
+    
+    const CAR = "🚗";
+    const GOAT = "🐐";
+
+    initGame();
+    updateStatsDisplay();
+
+    function initGame() {
+        gameState = 0;
+        userInitialPick = -1;
+        montyOpenedDoor = -1;
+        carLocation = Math.floor(Math.random() * 3);
+
+        document.getElementById("hostMessage").innerText = "Choose a Door!";
+        
+        // Reset Doors
+        for(let i=0; i<3; i++) {
+            let container = document.getElementById("door"+(i+1));
+            let inner = document.getElementById("doorInner"+i);
+            container.classList.remove("selected");
+            inner.classList.remove("open");
+            document.getElementById("prize"+i).innerText = (i === carLocation) ? CAR : GOAT;
+            
+            // Reset cursor
+            container.style.cursor = "pointer";
+        }
+    }
+
+    function handleDoorClick(doorIndex) {
+        // Phase 1: Initial Pick
+        if(gameState === 0) {
+            userInitialPick = doorIndex;
+            document.getElementById("door"+(doorIndex+1)).classList.add("selected");
+            revealGoat();
+        } 
+        // Phase 2: Final Decision
+        else if(gameState === 2) {
+            // Can't pick the open door
+            if (doorIndex === montyOpenedDoor) return;
+
+            // Determine if they switched or stayed based on which door they clicked
+            let didSwitch = (doorIndex !== userInitialPick);
+            finalizeChoice(didSwitch);
+        }
+    }
+
+    function revealGoat() {
+        gameState = 1; // Animation state
+        
+        let availableDoors = [];
+        for(let i=0; i<3; i++) {
+            if(i !== userInitialPick && i !== carLocation) {
+                availableDoors.push(i);
+            }
+        }
+        montyOpenedDoor = availableDoors[Math.floor(Math.random() * availableDoors.length)];
+
+        document.getElementById("hostMessage").innerText = "Monty reveals a Goat!";
+
+        setTimeout(() => {
+            document.getElementById("doorInner"+montyOpenedDoor).classList.add("open");
+            // Remove pointer from the opened door
+            document.getElementById("door"+(montyOpenedDoor+1)).style.cursor = "default";
+            
+            setTimeout(() => {
+                promptDecision();
+            }, 1000);
+        }, 500);
+    }
+
+    function promptDecision() {
+        gameState = 2; // Decision state
+        let otherDoor = [0,1,2].find(d => d !== userInitialPick && d !== montyOpenedDoor);
+        
+        document.getElementById("hostMessage").innerText = 
+            `Tap Door ${userInitialPick+1} to STAY, or Door ${otherDoor+1} to SWITCH!`;
+    }
+
+    function finalizeChoice(didSwitch) {
+        gameState = 3; // Result state
+        
+        let finalDoor = userInitialPick;
+        if(didSwitch) {
+            finalDoor = [0,1,2].find(d => d !== userInitialPick && d !== montyOpenedDoor);
+        }
+
+        // Visually update selection if they switched
+        for(let i=0; i<3; i++) {
+            document.getElementById("door"+(i+1)).classList.remove("selected");
+        }
+        document.getElementById("door"+(finalDoor+1)).classList.add("selected");
+
+        let won = (finalDoor === carLocation);
+
+        // Open the chosen door
+        document.getElementById("doorInner"+finalDoor).classList.add("open");
+
+        // Disable all cursors
+        for(let i=0; i<3; i++) {
+             document.getElementById("door"+(i+1)).style.cursor = "default";
+        }
+
+        if(won) {
+            document.getElementById("hostMessage").innerText = "YOU WON A NEW CAR! 🚗💨";
+            confettiEffect();
+        } else {
+            document.getElementById("hostMessage").innerText = "It's a Goat. 🐐";
+        }
+
+        saveResult(didSwitch, won);
+
+        // Wait 3 seconds, then restart
+        setTimeout(() => {
+            initGame();
+        }, 3000);
+    }
+
+    function saveResult(switched, won) {
+        if(switched) {
+            stats.switchTotal++;
+            if(won) stats.switchWins++;
+        } else {
+            stats.stayTotal++;
+            if(won) stats.stayWins++;
+        }
+        updateStatsDisplay();
+
+        fetch('/monty_save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ switched: switched, won: won })
+        });
+    }
+
+    function updateStatsDisplay() {
+        let switchPct = stats.switchTotal === 0 ? 0 : (stats.switchWins / stats.switchTotal * 100).toFixed(1);
+        document.getElementById("switchStat").innerText = switchPct + "%";
+        document.getElementById("switchCount").innerText = `${stats.switchWins}/${stats.switchTotal}`;
+
+        let stayPct = stats.stayTotal === 0 ? 0 : (stats.stayWins / stats.stayTotal * 100).toFixed(1);
+        document.getElementById("stayStat").innerText = stayPct + "%";
+        document.getElementById("stayCount").innerText = `${stats.stayWins}/${stats.stayTotal}`;
+    }
+
+    // --- UPDATED CONFETTI (ALL GOLD) ---
+    function confettiEffect() {
+        const stage = document.querySelector('.stage-container');
+        for(let i=0; i<60; i++) { // Increased count slightly
+            let c = document.createElement('div');
+            c.style.width = '10px'; c.style.height = '10px';
+            
+            // Randomly pick between different shades of gold for a shimmering effect
+            c.style.background = ['#FFD700', '#DAA520', '#F0E68C', '#B8860B'][Math.floor(Math.random()*4)];
+            
+            c.style.position = 'absolute';
+            c.style.left = Math.random() * 100 + '%';
+            c.style.top = '-10px';
+            // Randomize fall speed slightly
+            c.style.transition = `top ${Math.random() * 0.5 + 0.8}s ease-in, opacity 1s`;
+            c.style.zIndex = 100;
+            stage.appendChild(c);
+            
+            setTimeout(() => {
+                c.style.top = '100%';
+                c.style.opacity = 0;
+            }, 50);
+            
+            setTimeout(() => c.remove(), 1500);
+        }
+    }
+</script>
+{% endblock %}

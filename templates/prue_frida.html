@@ -1,0 +1,388 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+   Prue & Frida
+{% endblock %}
+
+
+{% block main %}
+<style>
+   /* --- Game Styles: Newspaper Aesthetic --- */
+  
+   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@700;900&family=Merriweather:wght@400;700&display=swap');
+
+
+   .desk-background {
+       background-color: #2c3e50;
+       background-image: url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+       min-height: 80vh;
+       padding: 15px;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       user-select: none;
+   }
+
+
+   .newspaper-container {
+       background-color: #f4f1ea;
+       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+       width: 850px;
+       height: auto;
+       min-height: 550px;
+       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+       padding: 25px 30px;
+       position: relative;
+       display: flex;
+       flex-direction: column;
+       color: #1a1a1a;
+       border: 1px solid #d3cfc0;
+   }
+
+
+   .masthead {
+       font-family: 'Playfair Display SC', serif;
+       font-size: 3rem;
+       font-weight: 900;
+       text-align: center;
+       text-transform: uppercase;
+       line-height: 1;
+       margin-bottom: 8px;
+       letter-spacing: -1px;
+       text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+   }
+
+
+   .dateline {
+       font-family: 'Merriweather', serif;
+       font-size: 0.85rem;
+       text-align: center;
+       text-transform: uppercase;
+       border-top: 2px solid #1a1a1a;
+       border-bottom: 1px solid #1a1a1a;
+       padding: 5px 0;
+       margin-bottom: 20px;
+       font-weight: 700;
+   }
+
+
+   .columns-wrapper {
+       display: flex;
+       flex: 1;
+       height: 100%;
+   }
+
+
+   .newspaper-column {
+       flex: 1;
+       padding: 0 20px;
+       font-family: 'Merriweather', 'Georgia', serif;
+       font-size: 1.05rem;
+       line-height: 1.6rem;
+       text-align: justify;
+   }
+
+
+   .left-col {
+       border-right: 2px solid #1a1a1a;
+   }
+
+
+   .headline-sub {
+       font-family: 'Playfair Display SC', serif;
+       font-weight: 700;
+       font-size: 1.5rem;
+       margin-bottom: 15px;
+       line-height: 1.2;
+       text-align: left;
+   }
+
+
+   /* --- Game Interactive Elements --- */
+  
+   .game-word {
+       display: inline-block;
+       padding: 0 1px;
+       cursor: pointer;
+       position: relative;
+   }
+
+
+   .game-word[data-state="typo"] {
+       color: #000;
+       /* REMOVED font-weight: 900; here */
+       text-shadow: 0 0 1px rgba(0,0,0,0.3);
+   }
+
+
+   .game-word.caught {
+       color: #28a745 !important;
+       font-weight: bold;
+       text-decoration: underline double;
+       animation: pop 0.3s ease;
+   }
+
+
+   .game-word.missed-click {
+       background-color: rgba(220, 53, 69, 0.2);
+       animation: shake 0.3s ease;
+   }
+
+
+   @keyframes pop { 50% { transform: scale(1.1); } }
+   @keyframes shake {
+       0%, 100% { transform: translateX(0); }
+       25% { transform: translateX(-3px); }
+       75% { transform: translateX(3px); }
+   }
+
+
+   /* HUD */
+   .hud-panel {
+       background: #f4f1ea;
+       border: 2px solid #1a1a1a;
+       padding: 8px 20px;
+       margin-bottom: 15px;
+       box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+       display: flex;
+       gap: 25px;
+       font-family: 'Playfair Display SC', serif;
+       font-weight: 700;
+       font-size: 1.2rem;
+       z-index: 20;
+       color: #1a1a1a;
+   }
+
+
+   .timer-danger { color: #d63031; animation: pulse 0.5s infinite alternate; }
+   @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
+
+
+   /* Overlay */
+   .game-overlay {
+       position: absolute;
+       top: 0; left: 0; right: 0; bottom: 0;
+       background: rgba(26, 26, 26, 0.96);
+       color: #f4f1ea;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       z-index: 100;
+       text-align: center;
+       border: 4px double #f4f1ea;
+       margin: 8px;
+   }
+
+
+   /* Start Button Styles */
+   .big-start-btn {
+       font-size: 1.4rem !important;
+       padding: 12px 35px !important;
+       color: #f4f1ea !important;
+       border: 3px solid #f4f1ea !important;
+       box-shadow: 0 6px 15px rgba(253, 126, 20, 0.5) !important;
+       transform: scale(1);
+       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+   }
+
+
+   .big-start-btn:hover {
+        transform: scale(1.1) translateY(-4px) !important;
+        box-shadow: 0 10px 25px rgba(253, 126, 20, 0.7) !important;
+   }
+</style>
+
+
+<div class="desk-background">
+  
+   <div class="hud-panel">
+       <div>SCORE: <span id="scoreEl">0</span></div>
+       <div>TIME: <span id="timeEl">15</span>s</div>
+   </div>
+
+
+   <div class="newspaper-container">
+      
+       <div class="masthead">The Blotchfield Chronicles</div>
+       <div class="dateline">
+           Vol. CXII No. 45 — Tuesday, October 26th — Price: Two Cents
+       </div>
+
+
+       <div class="columns-wrapper">
+           <div class="newspaper-column left-col" id="pageLeft">
+               <h3 class="headline-sub">Mayor's "Blue Mandate" Causes Transit Chaos</h3>
+               <div id="textLeft">
+                   <span style="float: left; font-size: 2.8rem; line-height: 0.8; padding-right: 8px; font-family: 'Playfair Display SC';">T</span>he history of Blotchville is written in the ink of curious decisions. It was a Tuesday when the mayor declared that all buses must be blue. The mandate was immediate. Paint cans were stockpiled in the town square, and by dawn, the fleet was transformed into a sea of azure. Residents claimed they could smell fresh paint from three blocks away, though the mayor insisted this was “the scent of progress.”
+                   Commuters were bewildered but compliant, boarding the cobalt vehicles with a mix of curiosity and resignation. To ensure contrast, the
+               </div>
+           </div>
+
+
+           <div class="newspaper-column right-col" id="pageRight">
+               <div id="textRight">
+                   opposition party demanded that all cars be orange. Thus, the morning commute became a battle of complementaries. The local mechanic reported a 30% increase in damages due to fender benders as drivers struggled to navigate the color chaos. Economists warned that the cost of constant repairs and repainting could destabilize the municipal budget, but the mayor remained confident.
+                   “Color is an investment,” she insisted during a press conference held beside a freshly repainted stop sign.
+                   The sign was purple by mistake, but residents agreed it had a certain charm. There will be a Q&amp;A session at the next town hall meeting, where citizens can voice their concerns and suggestions.
+               </div>
+           </div>
+       </div>
+
+
+       <div id="overlay" class="game-overlay">
+           <h1 class="mb-3" style="font-family: 'Playfair Display SC'; font-size: 2.5rem;">Prue & Frida: Copy Editors</h1>
+           <p class="lead mb-3" style="font-family: 'Merriweather';">The printing press is corrupted!</p>
+           <p class="mb-4" style="font-size: 1.1rem;">Click the <strong>symbols ($, %, &)</strong> before they go to print.<br>Do not click correct words!</p>
+           <button class="btn btn-game-start big-start-btn" style="font-family: 'Playfair Display SC'; letter-spacing: 1px;" onclick="initGame()">Start Editing</button>
+       </div>
+   </div>
+</div>
+
+
+<script>
+   // --- STATE ---
+   let score = 0;
+   let timeLeft = 15;
+   let isPlaying = false;
+   let activeTypos = new Set();
+   let gameInterval;
+   let spawnInterval;
+  
+   const scoreEl = document.getElementById('scoreEl');
+   const timeEl = document.getElementById('timeEl');
+   const overlay = document.getElementById('overlay');
+
+
+   // --- SETUP TEXT ---
+   function wrapWords(containerId) {
+       const container = document.getElementById(containerId);
+       const html = container.innerHTML;
+      
+       const newHtml = html.replace(/(?<!<[^>]*)(?<!&)\b(\w+)\b/g, function(match) {
+           if(match.length === 1 && containerId === 'textLeft') return match;
+           return `<span class="game-word" data-original="${match}" onclick="handleWordClick(this)">${match}</span>`;
+       });
+      
+       container.innerHTML = newHtml;
+   }
+
+
+   wrapWords('textLeft');
+   wrapWords('textRight');
+
+
+   // --- GAME LOGIC ---
+   function initGame() {
+       score = 0;
+       timeLeft = 15;
+       scoreEl.innerText = "0";
+       timeEl.innerText = "15";
+       activeTypos.clear();
+       timeEl.classList.remove('timer-danger');
+      
+       document.querySelectorAll('.game-word').forEach(span => {
+           span.innerText = span.dataset.original;
+           span.dataset.state = "clean";
+           span.classList.remove('caught', 'missed-click');
+       });
+
+
+       overlay.style.display = "none";
+       isPlaying = true;
+
+
+       gameInterval = setInterval(() => {
+           timeLeft--;
+           timeEl.innerText = timeLeft;
+           if(timeLeft <= 5) timeEl.classList.add('timer-danger');
+           if(timeLeft <= 0) endGame();
+       }, 1000);
+
+
+       spawnLoop();
+   }
+
+
+   function spawnLoop() {
+       if(!isPlaying) return;
+       createRandomTypo();
+       const urgency = Math.max(300, 1200 - ((15 - timeLeft) * 60));
+       spawnInterval = setTimeout(spawnLoop, urgency);
+   }
+
+
+   function createRandomTypo() {
+       const allWords = Array.from(document.querySelectorAll('.game-word'));
+       const cleanWords = allWords.filter(w => w.dataset.state !== "typo");
+      
+       if(cleanWords.length === 0) return;
+
+
+       const target = cleanWords[Math.floor(Math.random() * cleanWords.length)];
+       const original = target.dataset.original;
+
+
+       target.innerText = generateTypoText(original);
+       target.dataset.state = "typo";
+       activeTypos.add(target);
+
+
+       setTimeout(() => {
+           if(isPlaying && target.dataset.state === "typo") {
+               target.innerText = original;
+               target.dataset.state = "clean";
+               activeTypos.delete(target);
+           }
+       }, 1500);
+   }
+
+
+   function generateTypoText(word) {
+       const symbols = ['$', '%', '&', '#', '@'];
+       const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+       const chars = word.split('');
+       const index = Math.floor(Math.random() * chars.length);
+       chars[index] = symbol;
+       return chars.join('');
+   }
+
+
+   // --- INTERACTION ---
+   window.handleWordClick = function(element) {
+       if(!isPlaying) return;
+
+
+       if(element.dataset.state === "typo") {
+           score += 50;
+           element.classList.add('caught');
+           element.innerText = element.dataset.original;
+           element.dataset.state = "clean";
+           activeTypos.delete(element);
+           setTimeout(() => element.classList.remove('caught'), 500);
+       } else {
+           score -= 20;
+           element.classList.add('missed-click');
+           setTimeout(() => element.classList.remove('missed-click'), 500);
+       }
+       scoreEl.innerText = score;
+   };
+
+
+   function endGame() {
+       isPlaying = false;
+       clearInterval(gameInterval);
+       clearTimeout(spawnInterval);
+      
+       overlay.innerHTML = `
+           <h1 class="mb-3" style="font-family: 'Playfair Display SC';">Deadline Reached!</h1>
+           <p class="lead" style="font-family: 'Merriweather';">Final Score: <span class="fw-bold" style="color: #fd7e14; font-size: 2.5rem;">${score}</span></p>
+           <button class="btn btn-game-start big-start-btn mt-3" style="font-family: 'Playfair Display SC';" onclick="initGame()">Play Again</button>
+       `;
+       overlay.style.display = "flex";
+       timeEl.classList.remove('timer-danger');
+   }
+</script>
+{% endblock %}
