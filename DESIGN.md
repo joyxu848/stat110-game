@@ -42,6 +42,30 @@ Building on the official Stat110 logo, styling is stored in static/styles.css. E
 
 To ensure the security of user accounts, the application strictly adheres to best practices for credential management. Passwords are never stored in plain text within the database; instead, the system utilizes the werkzeug.security library to hash passwords before saving them. By employing functions such as generate_password_hash and check_password_hash, the application ensures that sensitive user credentials remain protected even in the event of unauthorized database access.
 
+## Game Selection and Minigames
+
+When users navigate to the Study Break section (via the navigation bar or /break route), they are presented with a game selection menu. This menu allows them to choose between multiple Stat110-themed minigames, described below. The selection page is rendered from game_select.html and is designed for easy expansion as new games are added.
+
+Each game is based on a Stat 110 inside joke. Blotchville appears in pset problems about poisson processes; notably, in Blotchville, buses arrive according to a poisson process, so the expected wait time does not depend at all on how long you have already been waiting. In this game, you get to see what it's like being a Blotchville bus driver - needing to dodge incoming traffic, and never seeming to make any progress towards a destination lol. Prue & Frida is inspired by another Stat 110 problem - they're proofreaders (say it out loud - get it?). Monty Hall is a classic unintuitive probability theory question. And, last but not least, many recent pset questions have featured coffee, tea, and hot chocolate drinkers, so this problem pays homage to that, with a specific Cambridge theme. 
+
+### Blotchville
+
+In "Blotchville," the player takes on the role of a bus driver with the objective of dodging oncoming traffic and surviving as long as possible to maximize their score. The game is rendered entirely on an HTML5 canvas, using the arrow keys for control. Behind the scenes, a JavaScript game loop manages real-time entity spawning and collision detection. High scores are automatically persisted to the leaderboard table in the database and displayed on the game page, allowing users to compete for the top rank. The top five high scores are displayed. 
+
+### Prue & Frida
+
+In "Prue & Frida," the objective is to verify the accuracy of a newspaper article by identifying and correcting typos as quickly as possible. Symbol typos such as $ and & are randomly inserted into the text. Players must spot and click these characters to fix them, where correct typo identification wins points and mistakes lose points. The game is timed at 15 seconds. Players might notice that the text of the article provides lore for why the bus and cars in Blotchville are blue and orange. 
+
+### Monty Hall
+
+"Monty Hall" simulates the famous probability puzzle to empirically demonstrate the statistical advantage of the "Switch" strategy. Users select one of three doors, after which a non-prize "goat" is revealed behind one of the remaining doors. The user then decides whether to stick with their original choice or switch to the remaining door. Crucially, the application records the user's cumulative history in the monty_stats table, calculating and displaying real-time aggregate win rates for "Switching" versus "Staying." If a user plays for a while, they would expect to see a 2/3 win rate for switching and a 1/3 for staying. 
+
+### Coffee, Tea and Hot Chocolate
+
+This game serves as a voting poll to settle the debate on where to find the best hot drinks in Cambridge. Users can cast one vote in each of three categories: Coffee, Tea, and Hot Chocolate. The backend strictly enforces a "one vote per user per category" rule using a composite primary key in the cafe_votes table. The results are visualized as real-time progress bars, displaying the percentage share for each establishment to reflect the current community consensus.
+
 ## Known limitations and future work
 
 The current architecture has a few known limitations that could be addressed in future iterations. First, the application relies on a system-level dependency, Pandoc, to convert LaTeX content into HTML. While this preserves the flexibility to add new problems dynamically at runtime, a production-ready version might pre-compile these snippets to remove the dependency on the end-user's environment. Additionally, the image handling pipeline relies on heuristics that assume a corresponding PNG exists for every figure referenced in the LaTeX source. While this was manageable for the current small dataset, a more robust asset pipeline would be required to automatically extract and convert figures for a larger library of problems.
+
+Also, the games are far from perfect, but we figured they are cute and fun as a brief study break. If they were too good, they wouldn't be a study break so much as a study distraction haha. Thank you for reading! We would appreciate any feedback as we consider ways to improve our website. 
